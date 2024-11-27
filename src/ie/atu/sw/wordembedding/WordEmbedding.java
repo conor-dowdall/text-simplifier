@@ -10,10 +10,10 @@ import java.util.Map;
 
 public record WordEmbedding(String word, double[] embedding, List<String> similarWords) {
 
-    public static String delimiter = ", ";
-
     public static Map<String, WordEmbedding> getWordEmbeddingMap(String fileName)
             throws IOException {
+        String delimiter = " ";
+        // String delimiter = ", ";
 
         Map<String, WordEmbedding> wordEmbeddingMap = new HashMap<>();
 
