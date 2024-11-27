@@ -22,6 +22,7 @@ public class SimplifierMainMenu extends Menu {
                         "1",
                         "Launch Simplify File",
                         () -> {
+                            this.settingsMenu.printStoredSettings();
                             this.launchSimplifyTextFile();
                             this.printMenuAndAcceptChoice();
                         }),
@@ -29,6 +30,7 @@ public class SimplifierMainMenu extends Menu {
                         "2",
                         "Launch Simplify Text",
                         () -> {
+                            this.settingsMenu.printStoredSettings();
                             this.launchSimplifyText();
                             this.printMenuAndAcceptChoice();
                         }),

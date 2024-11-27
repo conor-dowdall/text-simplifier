@@ -50,4 +50,9 @@ public class SimilarityAlgorithmMenu extends Menu {
         this.preferences.put(SIMILARITY_ALGORITHM_KEY, similarityAlgorithm.name());
     }
 
+    public void printStoredSettings() {
+        this.printInfo("Similarity Algorithm: \t\t"
+                + this.getSimilarityAlgorithmToUse().toString());
+    }
+
 }

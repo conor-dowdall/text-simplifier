@@ -12,8 +12,8 @@ public record WordEmbedding(String word, double[] embedding, List<String> simila
 
     public static Map<String, WordEmbedding> getWordEmbeddingMap(String fileName)
             throws IOException {
-        String delimiter = " ";
-        // String delimiter = ", ";
+        // String delimiter = " ";
+        String delimiter = ", ";
 
         Map<String, WordEmbedding> wordEmbeddingMap = new HashMap<>();
 

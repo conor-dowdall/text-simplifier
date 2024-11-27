@@ -49,4 +49,9 @@ public class ReplacementMethodMenu extends Menu {
     public void setReplacementMethodToUse(ReplacementMethod replacementMethod) {
         this.preferences.put(REPLACEMENT_METHOD_KEY, replacementMethod.name());
     }
+
+    public void printStoredSettings() {
+        this.printInfo("Replacement Method: \t\t"
+                + this.getReplacementMethodToUse().toString());
+    }
 }

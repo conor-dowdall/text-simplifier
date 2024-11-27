@@ -290,7 +290,7 @@ public class SimplifierSettingsMenu extends Menu {
         this.preferences.putInt(NUM_SIMILAR_WORDS_KEY, n);
     }
 
-    private void printStoredSettings() {
+    public void printStoredSettings() {
         try {
             this.printTitle("Stored Settings");
 
@@ -304,10 +304,8 @@ public class SimplifierSettingsMenu extends Menu {
                     + this.getOutputTextFileName());
             this.printInfo("Num Similar Words to Store: \t"
                     + this.getNumSimilarReplacementWordsToStore());
-            this.printInfo("Similarity Algorithm: \t\t"
-                    + this.similarityAlgorithmMenu.getSimilarityAlgorithmToUse().toString());
-            this.printInfo("Replacement Method: \t\t"
-                    + this.replacementMethodMenu.getReplacementMethodToUse().toString());
+            similarityAlgorithmMenu.printStoredSettings();
+            replacementMethodMenu.printStoredSettings();
         } catch (Exception e) {
             this.printError("Error reading preferences: " + e.getMessage());
         }
@@ -319,7 +317,11 @@ public class SimplifierSettingsMenu extends Menu {
     private void resetSettings() {
         try {
             this.preferences.clear();
+            this.wordReplacer.setNumSimilarReplacementWordsToStore(this.getNumSimilarReplacementWordsToStore());
+            this.wordReplacer.setSimilarityAlgorithmToUse(similarityAlgorithmMenu.getSimilarityAlgorithmToUse());
+            this.wordReplacer.setReplacementMethodToUse(replacementMethodMenu.getReplacementMethodToUse());
             this.printSuccess("Settings reset to default values");
+            this.printStoredSettings();
         } catch (BackingStoreException e) {
             this.printError(e.getMessage());
         }
