@@ -20,12 +20,18 @@ import ie.atu.sw.wordembedding.WordEmbeddingSimilarity;
 public class WordReplacer {
 
     public static Set<String> getReplacementWordSet(String fileName) throws IOException {
+        String delimiter = ", ";
+
         Set<String> replacementWordSet = new HashSet<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
 
             while ((line = br.readLine()) != null) {
-                replacementWordSet.add(line.trim());
+                String[] parts = line.split(delimiter);
+                for (int i = 0; i < parts.length; i++) {
+                    replacementWordSet.add(parts[i]);
+                }
             }
         }
 
