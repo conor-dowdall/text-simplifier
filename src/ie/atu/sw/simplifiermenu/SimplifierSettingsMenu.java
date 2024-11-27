@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import ie.atu.sw.console.ConsoleProgressMeter;
 import ie.atu.sw.menu.Menu;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.wordreplacer.WordReplacer;
@@ -15,9 +16,13 @@ import ie.atu.sw.wordreplacer.WordReplacer;
 public class SimplifierSettingsMenu extends Menu {
     private static final String WORD_EMBEDDINGS_FILE_NAME_KEY = "wordEmbeddingsFileName";
     private static final String WORD_EMBEDDINGS_FILE_NAME_DEFAULT = "../word-embeddings.txt";
+    // private static final String WORD_EMBEDDINGS_FILE_NAME_DEFAULT =
+    // "../glove.6B/glove.6B.50d.txt";
 
     private static final String REPLACEMENT_WORDS_FILE_NAME_KEY = "replacementWordsFileName";
     private static final String REPLACEMENT_WORDS_FILE_NAME_DEFAULT = "../google-1000.txt";
+    // private static final String REPLACEMENT_WORDS_FILE_NAME_DEFAULT =
+    // "../common-english-words.txt";
 
     private static final String INPUT_TEXT_FILE_NAME_KEY = "inputTextFileName";
     private static final String INPUT_TEXT_FILE_NAME_DEFAULT = "../input.txt";
@@ -103,8 +108,23 @@ public class SimplifierSettingsMenu extends Menu {
     }
 
     public void loadWordEmbeddingsFile() throws IOException {
+        int CROSSOVER_TIME = 99;
         String fileName = this.scanWordEmbeddingsFileName();
+
+        for (int i = 0; i <= CROSSOVER_TIME; i++) {
+            ConsoleProgressMeter.printProgress(i, 100);
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                System.err.println("Sleep interrupted: " + e.getMessage());
+            }
+        }
+
         this.wordReplacer.loadWordEmbeddingsFile(fileName);
+
+        for (int i = CROSSOVER_TIME; i <= 100; i++) {
+            ConsoleProgressMeter.printProgress(i, 100);
+        }
     }
 
     private String scanWordEmbeddingsFileName() throws FileNotFoundException {
@@ -119,7 +139,7 @@ public class SimplifierSettingsMenu extends Menu {
         if (!file.exists() || !file.isFile()) {
             throw new FileNotFoundException("Cannot find WORD EMBEDDINGS file: " + inputFileName);
         } else {
-            this.printSuccess("WORD EMBEDDINGS text file = " + inputFileName);
+            this.printSuccess("WORD EMBEDDINGS text file = " + file.getAbsolutePath());
             this.setWordEmbeddingsFileName(inputFileName);
             return inputFileName;
         }
@@ -144,8 +164,23 @@ public class SimplifierSettingsMenu extends Menu {
     }
 
     public void loadReplacementWordsFile() throws IOException {
+        int CROSSOVER_TIME = 99;
         String fileName = this.scanReplacementWordsFileName();
+
+        for (int i = 0; i <= CROSSOVER_TIME; i++) {
+            ConsoleProgressMeter.printProgress(i, 100);
+            try {
+                Thread.sleep(3);
+            } catch (InterruptedException e) {
+                System.err.println("Sleep interrupted: " + e.getMessage());
+            }
+        }
+
         this.wordReplacer.loadReplacementWordsFile(fileName);
+
+        for (int i = CROSSOVER_TIME; i <= 100; i++) {
+            ConsoleProgressMeter.printProgress(i, 100);
+        }
     }
 
     private String scanReplacementWordsFileName() throws FileNotFoundException {
@@ -160,7 +195,7 @@ public class SimplifierSettingsMenu extends Menu {
         if (!file.exists() || !file.isFile()) {
             throw new FileNotFoundException("Cannot find REPLACEMENT WORDS file: " + inputFileName);
         } else {
-            this.printSuccess("REPLACEMENT WORDS text file = " + inputFileName);
+            this.printSuccess("REPLACEMENT WORDS text file = " + file.getAbsolutePath());
             this.setReplacementWordsFileName(inputFileName);
             return inputFileName;
         }
@@ -269,7 +304,7 @@ public class SimplifierSettingsMenu extends Menu {
                     + this.getOutputTextFileName());
             this.printInfo("Num Similar Words to Store: \t"
                     + this.getNumSimilarReplacementWordsToStore());
-            this.printInfo("Similarity Algorighthm: \t\t"
+            this.printInfo("Similarity Algorithm: \t\t"
                     + this.similarityAlgorithmMenu.getSimilarityAlgorithmToUse().toString());
             this.printInfo("Replacement Method: \t\t"
                     + this.replacementMethodMenu.getReplacementMethodToUse().toString());
