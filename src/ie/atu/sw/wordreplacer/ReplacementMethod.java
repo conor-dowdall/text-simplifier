@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public enum ReplacementMethod {
+
     MOST_SIMILAR("Most Similar Word") {
         @Override
         public String getReplacement(List<String> strings) {
@@ -72,8 +73,9 @@ public enum ReplacementMethod {
 
     @Override
     public String toString() {
-        return this.name;
+        return name;
     }
 
     public abstract String getReplacement(List<String> strings);
+
 }

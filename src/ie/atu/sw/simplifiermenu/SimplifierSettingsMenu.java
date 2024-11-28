@@ -9,20 +9,18 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import ie.atu.sw.console.ConsoleProgressMeter;
-import ie.atu.sw.menu.Menu;
 import ie.atu.sw.menu.MenuItem;
+import ie.atu.sw.menu.MenuPrinter;
+import ie.atu.sw.menu.SettingsMenu;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
-public class SimplifierSettingsMenu extends Menu {
+public class SimplifierSettingsMenu extends SettingsMenu {
+
     private static final String WORD_EMBEDDINGS_FILE_NAME_KEY = "wordEmbeddingsFileName";
     private static final String WORD_EMBEDDINGS_FILE_NAME_DEFAULT = "../word-embeddings.txt";
-    // private static final String WORD_EMBEDDINGS_FILE_NAME_DEFAULT =
-    // "../glove.6B/glove.6B.50d.txt";
 
     private static final String REPLACEMENT_WORDS_FILE_NAME_KEY = "replacementWordsFileName";
     private static final String REPLACEMENT_WORDS_FILE_NAME_DEFAULT = "../google-1000.txt";
-    // private static final String REPLACEMENT_WORDS_FILE_NAME_DEFAULT =
-    // "../common-english-words.txt";
 
     private static final String INPUT_TEXT_FILE_NAME_KEY = "inputTextFileName";
     private static final String INPUT_TEXT_FILE_NAME_DEFAULT = "../input.txt";
@@ -34,17 +32,38 @@ public class SimplifierSettingsMenu extends Menu {
     private static final int NUM_SIMILAR_WORDS_DEFAULT = 1;
 
     private WordReplacer wordReplacer;
-    private SimilarityAlgorithmMenu similarityAlgorithmMenu;
-    private ReplacementMethodMenu replacementMethodMenu;
-    private Preferences preferences = Preferences.userNodeForPackage(SimplifierSettingsMenu.class);
+    private SimilarityAlgorithmSettingsMenu similarityAlgorithmMenu;
+    private ReplacementMethodSettingsMenu replacementMethodMenu;
 
-    public SimplifierSettingsMenu(Scanner scanner, WordReplacer wordReplacer) {
-        super("Settings", scanner);
+    public SimplifierSettingsMenu(
+            Scanner scanner,
+            MenuPrinter menuPrinter,
+            Preferences preferences,
+            WordReplacer wordReplacer) {
+
+        super("Settings", scanner, menuPrinter, preferences);
+
         this.wordReplacer = wordReplacer;
-        this.wordReplacer.setNumSimilarReplacementWordsToStore(this.getNumSimilarReplacementWordsToStore());
-        this.similarityAlgorithmMenu = new SimilarityAlgorithmMenu(scanner, this.wordReplacer, this.preferences);
-        this.replacementMethodMenu = new ReplacementMethodMenu(scanner, this.wordReplacer, this.preferences);
+        this.wordReplacer
+                .setNumSimilarReplacementWordsToStore(
+                        getNumSimilarReplacementWordsToStore());
 
+        this.similarityAlgorithmMenu = new SimilarityAlgorithmSettingsMenu(
+                scanner,
+                menuPrinter,
+                preferences,
+                wordReplacer);
+
+        this.replacementMethodMenu = new ReplacementMethodSettingsMenu(
+                scanner,
+                menuPrinter,
+                preferences,
+                wordReplacer);
+
+    }
+
+    @Override
+    protected void createMenuItems() {
         List<MenuItem> itemList = List.of(
                 new MenuItem(
                         "1",
@@ -58,58 +77,58 @@ public class SimplifierSettingsMenu extends Menu {
                         "3",
                         "Set Number of Similar-Replacement-Words to Store",
                         () -> {
-                            this.scanNumSimilarReplacementWordsToStore();
-                            this.printMenuAndAcceptChoice();
+                            scanNumSimilarReplacementWordsToStore();
+                            printMenuAndAcceptChoice();
                         }),
                 new MenuItem(
                         "4",
                         "Set Similarity Algorithm to Use",
                         () -> {
-                            this.similarityAlgorithmMenu.printMenuAndAcceptChoice();
-                            this.printMenuAndAcceptChoice();
+                            similarityAlgorithmMenu.printMenuAndAcceptChoice();
+                            printMenuAndAcceptChoice();
                         }),
                 new MenuItem(
                         "5",
                         "Set String Replacement Method to Use",
                         () -> {
-                            this.replacementMethodMenu.printMenuAndAcceptChoice();
-                            this.printMenuAndAcceptChoice();
+                            replacementMethodMenu.printMenuAndAcceptChoice();
+                            printMenuAndAcceptChoice();
                         }),
                 new MenuItem(
                         "r",
                         "Reset Settings to Default Values",
                         () -> {
-                            this.resetSettings();
-                            this.printMenuAndAcceptChoice();
+                            resetPreferences();
+                            printMenuAndAcceptChoice();
                         }),
                 new MenuItem(
                         "s",
-                        "Print Stored Settings",
+                        "Print Preferences",
                         () -> {
-                            this.printStoredSettings();
-                            this.printMenuAndAcceptChoice();
+                            printPreferences();
+                            printMenuAndAcceptChoice();
                         }),
                 new MenuItem(
                         "q",
                         "Close Settings",
                         this::closeSettings));
 
-        this.addMenuItemList(itemList);
+        addMenuItemList(itemList);
     }
 
     private void loadWordEmbeddingsFileAndPrintMenu() {
         try {
-            this.loadWordEmbeddingsFile();
+            loadWordEmbeddingsFile();
         } catch (IOException e) {
-            this.printError(e.getMessage());
+            getMenuPrinter().printError(e.getMessage());
         } finally {
-            this.printMenuAndAcceptChoice();
+            printMenuAndAcceptChoice();
         }
     }
 
     public void loadWordEmbeddingsFile() throws IOException {
         int CROSSOVER_TIME = 99;
-        String fileName = this.scanWordEmbeddingsFileName();
+        String fileName = scanWordEmbeddingsFileName();
 
         for (int i = 0; i <= CROSSOVER_TIME; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -120,7 +139,7 @@ public class SimplifierSettingsMenu extends Menu {
             }
         }
 
-        this.wordReplacer.loadWordEmbeddingsFile(fileName);
+        wordReplacer.loadWordEmbeddingsFile(fileName);
 
         for (int i = CROSSOVER_TIME; i <= 100; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -128,10 +147,10 @@ public class SimplifierSettingsMenu extends Menu {
     }
 
     private String scanWordEmbeddingsFileName() throws FileNotFoundException {
-        String defaultFileName = this.getWordEmbeddingsFileName();
-        this.printInfo("Hit ENTER for default: " + defaultFileName);
-        this.printWithUnderline("Enter WORD EMBEDDINGS file name: ");
-        String inputFileName = this.scanner.nextLine();
+        String defaultFileName = getWordEmbeddingsFileName();
+        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultFileName);
+        getMenuPrinter().printWithUnderline("Enter WORD EMBEDDINGS file name: ");
+        String inputFileName = getScanner().nextLine();
         if (inputFileName.isEmpty()) {
             inputFileName = defaultFileName;
         }
@@ -139,33 +158,33 @@ public class SimplifierSettingsMenu extends Menu {
         if (!file.exists() || !file.isFile()) {
             throw new FileNotFoundException("Cannot find WORD EMBEDDINGS file: " + inputFileName);
         } else {
-            this.printSuccess("WORD EMBEDDINGS text file = " + file.getAbsolutePath());
-            this.setWordEmbeddingsFileName(inputFileName);
+            getMenuPrinter().printSuccess("WORD EMBEDDINGS text file = " + file.getAbsolutePath());
+            setWordEmbeddingsFileName(inputFileName);
             return inputFileName;
         }
     }
 
     private String getWordEmbeddingsFileName() {
-        return this.preferences.get(WORD_EMBEDDINGS_FILE_NAME_KEY, WORD_EMBEDDINGS_FILE_NAME_DEFAULT);
+        return getPreferences().get(WORD_EMBEDDINGS_FILE_NAME_KEY, WORD_EMBEDDINGS_FILE_NAME_DEFAULT);
     }
 
     private void setWordEmbeddingsFileName(String fileName) {
-        this.preferences.put(WORD_EMBEDDINGS_FILE_NAME_KEY, fileName);
+        getPreferences().put(WORD_EMBEDDINGS_FILE_NAME_KEY, fileName);
     }
 
     private void loadReplacementWordsFileAndPrintMenu() {
         try {
-            this.loadReplacementWordsFile();
+            loadReplacementWordsFile();
         } catch (IOException e) {
-            this.printError(e.getMessage());
+            getMenuPrinter().printError(e.getMessage());
         } finally {
-            this.printMenuAndAcceptChoice();
+            printMenuAndAcceptChoice();
         }
     }
 
     public void loadReplacementWordsFile() throws IOException {
         int CROSSOVER_TIME = 99;
-        String fileName = this.scanReplacementWordsFileName();
+        String fileName = scanReplacementWordsFileName();
 
         for (int i = 0; i <= CROSSOVER_TIME; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -176,7 +195,7 @@ public class SimplifierSettingsMenu extends Menu {
             }
         }
 
-        this.wordReplacer.loadReplacementWordsFile(fileName);
+        wordReplacer.loadReplacementWordsFile(fileName);
 
         for (int i = CROSSOVER_TIME; i <= 100; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -184,10 +203,10 @@ public class SimplifierSettingsMenu extends Menu {
     }
 
     private String scanReplacementWordsFileName() throws FileNotFoundException {
-        String defaultFileName = this.getReplacementWordsFileName();
-        this.printInfo("Hit ENTER for default: " + defaultFileName);
-        this.printWithUnderline("Enter REPLACEMENT WORDS file name: ");
-        String inputFileName = this.scanner.nextLine();
+        String defaultFileName = getReplacementWordsFileName();
+        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultFileName);
+        getMenuPrinter().printWithUnderline("Enter REPLACEMENT WORDS file name: ");
+        String inputFileName = getScanner().nextLine();
         if (inputFileName.isEmpty()) {
             inputFileName = defaultFileName;
         }
@@ -195,25 +214,25 @@ public class SimplifierSettingsMenu extends Menu {
         if (!file.exists() || !file.isFile()) {
             throw new FileNotFoundException("Cannot find REPLACEMENT WORDS file: " + inputFileName);
         } else {
-            this.printSuccess("REPLACEMENT WORDS text file = " + file.getAbsolutePath());
-            this.setReplacementWordsFileName(inputFileName);
+            getMenuPrinter().printSuccess("REPLACEMENT WORDS text file = " + file.getAbsolutePath());
+            setReplacementWordsFileName(inputFileName);
             return inputFileName;
         }
     }
 
     private String getReplacementWordsFileName() {
-        return this.preferences.get(REPLACEMENT_WORDS_FILE_NAME_KEY, REPLACEMENT_WORDS_FILE_NAME_DEFAULT);
+        return getPreferences().get(REPLACEMENT_WORDS_FILE_NAME_KEY, REPLACEMENT_WORDS_FILE_NAME_DEFAULT);
     }
 
     private void setReplacementWordsFileName(String fileName) {
-        this.preferences.put(REPLACEMENT_WORDS_FILE_NAME_KEY, fileName);
+        getPreferences().put(REPLACEMENT_WORDS_FILE_NAME_KEY, fileName);
     }
 
     public String scanInputTextFileName() throws FileNotFoundException {
-        String defaultFileName = this.getInputTextFileName();
-        this.printInfo("Hit ENTER for default: " + defaultFileName);
-        this.printWithUnderline("Enter INPUT TEXT file name: ");
-        String inputFileName = this.scanner.nextLine();
+        String defaultFileName = getInputTextFileName();
+        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultFileName);
+        getMenuPrinter().printWithUnderline("Enter INPUT TEXT file name: ");
+        String inputFileName = getScanner().nextLine();
         if (inputFileName.isEmpty()) {
             inputFileName = defaultFileName;
         }
@@ -221,47 +240,47 @@ public class SimplifierSettingsMenu extends Menu {
         if (!file.exists() || !file.isFile()) {
             throw new FileNotFoundException("Cannot find INPUT TEXT file: " + inputFileName);
         } else {
-            this.printSuccess("INPUT TEXT file = " + inputFileName);
-            this.setInputTextFileName(inputFileName);
+            getMenuPrinter().printSuccess("INPUT TEXT file = " + inputFileName);
+            setInputTextFileName(inputFileName);
             return inputFileName;
         }
     }
 
     private String getInputTextFileName() {
-        return this.preferences.get(INPUT_TEXT_FILE_NAME_KEY, INPUT_TEXT_FILE_NAME_DEFAULT);
+        return getPreferences().get(INPUT_TEXT_FILE_NAME_KEY, INPUT_TEXT_FILE_NAME_DEFAULT);
     }
 
     private void setInputTextFileName(String fileName) {
-        this.preferences.put(INPUT_TEXT_FILE_NAME_KEY, fileName);
+        getPreferences().put(INPUT_TEXT_FILE_NAME_KEY, fileName);
     }
 
     public String scanOutputTextFileName() {
-        String defaultOutputTextFileName = this.getOutputTextFileName();
-        this.printInfo("Hit ENTER for default: " + defaultOutputTextFileName);
-        this.printWithUnderline("Enter OUTPUT TEXT file name: ");
-        String outputTextFileName = scanner.nextLine();
+        String defaultOutputTextFileName = getOutputTextFileName();
+        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultOutputTextFileName);
+        getMenuPrinter().printWithUnderline("Enter OUTPUT TEXT file name: ");
+        String outputTextFileName = getScanner().nextLine();
         if (outputTextFileName.isEmpty()) {
             outputTextFileName = defaultOutputTextFileName;
         }
-        this.printSuccess("OUTPUT TEXT file = " + outputTextFileName);
-        this.setOutputTextFileName(outputTextFileName);
+        getMenuPrinter().printSuccess("OUTPUT TEXT file = " + outputTextFileName);
+        setOutputTextFileName(outputTextFileName);
         return outputTextFileName;
     }
 
     private String getOutputTextFileName() {
-        return this.preferences.get(OUTPUT_TEXT_FILE_NAME_KEY, OUTPUT_TEXT_FILE_NAME_DEFAULT);
+        return getPreferences().get(OUTPUT_TEXT_FILE_NAME_KEY, OUTPUT_TEXT_FILE_NAME_DEFAULT);
     }
 
     private void setOutputTextFileName(String fileName) {
-        this.preferences.put(OUTPUT_TEXT_FILE_NAME_KEY, fileName);
+        getPreferences().put(OUTPUT_TEXT_FILE_NAME_KEY, fileName);
     }
 
     public void scanNumSimilarReplacementWordsToStore() {
-        int defaultN = this.getNumSimilarReplacementWordsToStore();
-        this.printInfo("Hit ENTER for default: " + defaultN);
-        this.printWithUnderline("Enter NUMBER of similar words to store: ");
+        int defaultN = getNumSimilarReplacementWordsToStore();
+        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultN);
+        getMenuPrinter().printWithUnderline("Enter NUMBER of similar words to store: ");
 
-        String input = this.scanner.nextLine();
+        String input = getScanner().nextLine();
         int n;
 
         try {
@@ -271,64 +290,79 @@ public class SimplifierSettingsMenu extends Menu {
                 n = Integer.parseInt(input);
             }
 
-            this.wordReplacer.setNumSimilarReplacementWordsToStore(n);
-            this.setNumSimilarReplacementWordsToStore(n);
-            this.printSuccess("NUMBER of similar words to store = " + n);
+            wordReplacer.setNumSimilarReplacementWordsToStore(n);
+            setNumSimilarReplacementWordsToStore(n);
+            getMenuPrinter().printSuccess("NUMBER of similar words to store = " + n);
         } catch (NumberFormatException e) {
-            this.printError(e.getMessage());
+            getMenuPrinter().printError(e.getMessage());
         }
 
     }
 
     private int getNumSimilarReplacementWordsToStore() {
-        return this.preferences.getInt(
-                NUM_SIMILAR_WORDS_KEY,
-                NUM_SIMILAR_WORDS_DEFAULT);
+        return getPreferences().getInt(NUM_SIMILAR_WORDS_KEY, NUM_SIMILAR_WORDS_DEFAULT);
     }
 
     private void setNumSimilarReplacementWordsToStore(int n) {
-        this.preferences.putInt(NUM_SIMILAR_WORDS_KEY, n);
+        getPreferences().putInt(NUM_SIMILAR_WORDS_KEY, n);
     }
 
-    public void printStoredSettings() {
+    @Override
+    public void printPreferences() {
         try {
-            this.printTitle("Stored Settings");
 
-            this.printInfo("Word Embeddings File Name: \t"
-                    + this.getWordEmbeddingsFileName());
-            this.printInfo("Replacement Words File Name: \t"
-                    + this.getReplacementWordsFileName());
-            this.printInfo("Input Text File Name: \t\t"
-                    + this.getInputTextFileName());
-            this.printInfo("Output Text File Name: \t\t"
-                    + this.getOutputTextFileName());
-            this.printInfo("Num Similar Words to Store: \t"
-                    + this.getNumSimilarReplacementWordsToStore());
-            similarityAlgorithmMenu.printStoredSettings();
-            replacementMethodMenu.printStoredSettings();
+            getMenuPrinter().printTitle("Preferences");
+
+            getMenuPrinter().printInfo("Word Embeddings File Name: \t"
+                    + getWordEmbeddingsFileName());
+
+            getMenuPrinter().printInfo("Replacement Words File Name: \t"
+                    + getReplacementWordsFileName());
+
+            getMenuPrinter().printInfo("Input Text File Name: \t\t"
+                    + getInputTextFileName());
+
+            getMenuPrinter().printInfo("Output Text File Name: \t\t"
+                    + getOutputTextFileName());
+
+            getMenuPrinter().printInfo("Num Similar Words to Store: \t"
+                    + getNumSimilarReplacementWordsToStore());
+
+            similarityAlgorithmMenu.printPreferences();
+
+            replacementMethodMenu.printPreferences();
+
         } catch (Exception e) {
-            this.printError("Error reading preferences: " + e.getMessage());
+            getMenuPrinter().printError("Error reading preferences: " + e.getMessage());
         }
     }
 
     /**
      * reset all settings to their defaults by clearing the preferences
      */
-    private void resetSettings() {
+    @Override
+    public void resetPreferences() {
         try {
-            this.preferences.clear();
-            this.wordReplacer.setNumSimilarReplacementWordsToStore(this.getNumSimilarReplacementWordsToStore());
-            this.wordReplacer.setSimilarityAlgorithmToUse(similarityAlgorithmMenu.getSimilarityAlgorithmToUse());
-            this.wordReplacer.setReplacementMethodToUse(replacementMethodMenu.getReplacementMethodToUse());
-            this.printSuccess("Settings reset to default values");
-            this.printStoredSettings();
+
+            getPreferences().clear();
+
+            wordReplacer.setNumSimilarReplacementWordsToStore(getNumSimilarReplacementWordsToStore());
+
+            similarityAlgorithmMenu.resetPreferences();
+
+            replacementMethodMenu.resetPreferences();
+
+            getMenuPrinter().printSuccess("Preferences reset to default values");
+
+            printPreferences();
+
         } catch (BackingStoreException e) {
-            this.printError(e.getMessage());
+            getMenuPrinter().printError(e.getMessage());
         }
     }
 
     private void closeSettings() {
-        this.printInfo("Closing Settings");
+        getMenuPrinter().printInfo("Closing Settings");
     }
 
 }

@@ -37,11 +37,11 @@ public record WordEmbedding(String word, double[] embedding, List<String> simila
     }
 
     public void addSimilarWord(String word) {
-        this.similarWords.add(word);
+        similarWords.add(word);
     }
 
     public void emptySimilarWordList() {
-        this.similarWords.clear();
+        similarWords.clear();
     }
 
 }

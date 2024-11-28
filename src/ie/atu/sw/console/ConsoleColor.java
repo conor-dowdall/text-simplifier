@@ -10,6 +10,7 @@ package ie.atu.sw.console;
  *  See https://en.wikipedia.org/wiki/ANSI_escape_code for a decent description.
  */
 public enum ConsoleColor {
+
     // Reset
     RESET("Reset", "0"),
 
@@ -107,4 +108,5 @@ public enum ConsoleColor {
     public String toString() {
         return CTRL_SEQ_INTRO + this.color + CTRL_SEQ_END;
     }
+
 }

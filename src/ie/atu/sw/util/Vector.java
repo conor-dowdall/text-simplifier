@@ -5,6 +5,7 @@ package ie.atu.sw.util;
  * dot product
  */
 public class Vector {
+
     /**
      * add two vectors
      * 
@@ -170,4 +171,5 @@ public class Vector {
 
         return dotProduct / (Math.sqrt(magnitude1) * Math.sqrt(magnitude2));
     }
+
 }

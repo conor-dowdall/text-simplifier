@@ -25,6 +25,7 @@ package ie.atu.sw.console;
    * 
    */
 public class ConsoleProgressMeter {
+
     public static void printProgress(int index, int total) {
         if (index > total)
             return; // Out of range
@@ -67,4 +68,5 @@ public class ConsoleProgressMeter {
         if (index == total)
             System.out.println(ConsoleColor.RESET);
     }
+
 }

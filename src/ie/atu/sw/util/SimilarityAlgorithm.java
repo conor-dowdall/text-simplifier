@@ -5,6 +5,7 @@ package ie.atu.sw.util;
  * calculate method
  */
 public enum SimilarityAlgorithm {
+
     DOT_PRODUCT("Dot Product", true) {
         @Override
         public double calculate(double[] vector1, double[] vector2) {
@@ -41,12 +42,13 @@ public enum SimilarityAlgorithm {
 
     @Override
     public String toString() {
-        return this.name;
+        return name;
     }
 
     public boolean isHigherMoreSimilar() {
-        return this.isHigherMoreSimilar;
+        return isHigherMoreSimilar;
     }
 
     public abstract double calculate(double[] vector1, double[] vector2);
+
 }

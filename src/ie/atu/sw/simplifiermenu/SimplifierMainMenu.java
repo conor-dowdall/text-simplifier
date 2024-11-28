@@ -3,36 +3,48 @@ package ie.atu.sw.simplifiermenu;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.prefs.Preferences;
 
 import ie.atu.sw.menu.Menu;
 import ie.atu.sw.menu.MenuItem;
+import ie.atu.sw.menu.MenuPrinter;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierMainMenu extends Menu {
 
-    private WordReplacer wordReplacer = new WordReplacer();
-    private SimplifierSettingsMenu settingsMenu;
+    private final WordReplacer wordReplacer;
+    private final SimplifierSettingsMenu settingsMenu;
+    private final Preferences preferences = Preferences.userNodeForPackage(SimplifierMainMenu.class);
 
-    public SimplifierMainMenu() {
-        super("Simplifier", new Scanner(System.in));
-        settingsMenu = new SimplifierSettingsMenu(this.scanner, this.wordReplacer);
+    public SimplifierMainMenu(
+            Scanner scanner,
+            MenuPrinter menuPrinter,
+            WordReplacer wordReplacer) {
 
+        super("Simplifier", scanner, menuPrinter);
+        this.wordReplacer = wordReplacer;
+        settingsMenu = new SimplifierSettingsMenu(scanner, menuPrinter, preferences, wordReplacer);
+
+    }
+
+    @Override
+    protected void createMenuItems() {
         List<MenuItem> itemList = List.of(
                 new MenuItem(
                         "1",
                         "Launch Simplify File",
                         () -> {
-                            this.settingsMenu.printStoredSettings();
-                            this.launchSimplifyTextFile();
-                            this.printMenuAndAcceptChoice();
+                            settingsMenu.printPreferences();
+                            launchSimplifyTextFile();
+                            printMenuAndAcceptChoice();
                         }),
                 new MenuItem(
                         "2",
                         "Launch Simplify Text",
                         () -> {
-                            this.settingsMenu.printStoredSettings();
-                            this.launchSimplifyText();
-                            this.printMenuAndAcceptChoice();
+                            settingsMenu.printPreferences();
+                            launchSimplifyText();
+                            printMenuAndAcceptChoice();
                         }),
                 new MenuItem(
                         "3",
@@ -46,103 +58,102 @@ public class SimplifierMainMenu extends Menu {
                         "s",
                         "Settings",
                         () -> {
-                            this.launchSettingsMenu();
-                            this.printMenuAndAcceptChoice();
+                            launchSettingsMenu();
+                            printMenuAndAcceptChoice();
                         }),
                 new MenuItem(
                         "q",
                         "Quit",
-                        () -> this.quitProgram()));
+                        this::quitProgram));
 
-        this.addMenuItemList(itemList);
-
-        this.printMenuAndAcceptChoice();
+        addMenuItemList(itemList);
     }
 
     private void loadWordEmbeddingsFileAndPrintMenu() {
         try {
-            this.settingsMenu.loadWordEmbeddingsFile();
+            settingsMenu.loadWordEmbeddingsFile();
         } catch (IOException e) {
-            this.printError(e.getMessage());
+            getMenuPrinter().printError(e.getMessage());
         } finally {
-            this.printMenuAndAcceptChoice();
+            printMenuAndAcceptChoice();
         }
     }
 
     private void loadReplacementWordsFileAndPrintMenu() {
         try {
-            this.settingsMenu.loadReplacementWordsFile();
+            settingsMenu.loadReplacementWordsFile();
         } catch (IOException e) {
-            this.printError(e.getMessage());
+            getMenuPrinter().printError(e.getMessage());
         } finally {
-            this.printMenuAndAcceptChoice();
+            printMenuAndAcceptChoice();
         }
     }
 
     private void launchSimplifyTextFile() {
 
         try {
-            this.printTitle("Simplify File");
+            getMenuPrinter().printTitle("Simplify File");
 
-            if (this.wordReplacer.isWordEmbeddingMapNull()) {
-                this.settingsMenu.loadWordEmbeddingsFile();
+            if (wordReplacer.isWordEmbeddingMapNull()) {
+                settingsMenu.loadWordEmbeddingsFile();
             }
 
-            if (this.wordReplacer.isReplacementWordSetNull()) {
-                this.settingsMenu.loadReplacementWordsFile();
+            if (wordReplacer.isReplacementWordSetNull()) {
+                settingsMenu.loadReplacementWordsFile();
             }
 
-            String inputTextFileName = this.settingsMenu.scanInputTextFileName();
-            String outputTextFileName = this.settingsMenu.scanOutputTextFileName();
+            String inputTextFileName = settingsMenu.scanInputTextFileName();
+            String outputTextFileName = settingsMenu.scanOutputTextFileName();
 
-            this.wordReplacer
+            wordReplacer
                     .writeReplacedFile(
                             inputTextFileName,
                             outputTextFileName);
 
-            this.printSuccess("OUTPUT TEXT file written (" + outputTextFileName + ").");
+            getMenuPrinter().printSuccess("OUTPUT TEXT file written (" + outputTextFileName + ").");
         } catch (Exception e) {
-            this.printError(e.getMessage());
+            getMenuPrinter().printError(e.getMessage());
         }
     }
 
     private void launchSimplifyText() {
 
         try {
-            this.printTitle("Simplify Text");
+            getMenuPrinter().printTitle("Simplify Text");
 
-            if (this.wordReplacer.isWordEmbeddingMapNull()) {
-                this.settingsMenu.loadWordEmbeddingsFile();
+            if (wordReplacer.isWordEmbeddingMapNull()) {
+                settingsMenu.loadWordEmbeddingsFile();
             }
 
-            if (this.wordReplacer.isReplacementWordSetNull()) {
-                this.settingsMenu.loadReplacementWordsFile();
+            if (wordReplacer.isReplacementWordSetNull()) {
+                settingsMenu.loadReplacementWordsFile();
             }
 
             System.out.println();
-            this.printWithUnderline("Enter some text to simplify:");
+            getMenuPrinter().printWithUnderline("Enter some text to simplify:");
             System.out.println();
 
-            String text = this.scanner.nextLine();
-            String simplified = this.wordReplacer.replaceString(text);
+            String text = getScanner().nextLine();
+            String simplified = wordReplacer.replaceString(text);
 
             System.out.println();
-            this.printWithUnderline("Simplified Text:");
+            getMenuPrinter().printWithUnderline("Simplified Text:");
             System.out.println();
             System.out.println(simplified);
 
         } catch (Exception e) {
-            this.printError(e.getMessage());
+            getMenuPrinter().printError(e.getMessage());
         }
     }
 
     private void launchSettingsMenu() {
-        this.settingsMenu.printMenuAndAcceptChoice();
+        settingsMenu.printMenuAndAcceptChoice();
     }
 
     private void quitProgram() {
-        this.scanner.close();
-        this.printInfo("Quitting");
+        getScanner().close();
+        getMenuPrinter().printInfo("Quitting");
         System.exit(0);
     }
+
 }
