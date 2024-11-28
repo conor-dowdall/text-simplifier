@@ -23,8 +23,11 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
 
         super(scanner, menuPrinter, preferences, wordReplacer);
 
-        getWordReplacer().setReplacementMethodToUse(getReplacementMethodToUse());
+    }
 
+    @Override
+    protected void initWordReplacer() {
+        getWordReplacer().setReplacementMethodToUse(getReplacementMethodToUse());
     }
 
     @Override
@@ -41,6 +44,17 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
         addMenuItemList(itemList);
     }
 
+    @Override
+    public void printPreferences() {
+        getMenuPrinter().printInfo("Replacement Method: \t\t"
+                + getReplacementMethodToUse().toString());
+    }
+
+    @Override
+    public void resetPreferences() {
+        getWordReplacer().setReplacementMethodToUse(getReplacementMethodToUse());
+    }
+
     public ReplacementMethod getReplacementMethodToUse() {
         String replacementMethodToUse = getPreferences().get(
                 REPLACEMENT_METHOD_KEY,
@@ -53,17 +67,6 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
         getWordReplacer().setReplacementMethodToUse(replacementMethod);
         getPreferences().put(REPLACEMENT_METHOD_KEY, replacementMethod.name());
         getMenuPrinter().printSuccess("Replacement Method set to: " + replacementMethod.toString());
-    }
-
-    @Override
-    public void printPreferences() {
-        getMenuPrinter().printInfo("Replacement Method: \t\t"
-                + getReplacementMethodToUse().toString());
-    }
-
-    @Override
-    public void resetPreferences() {
-        getWordReplacer().setReplacementMethodToUse(getReplacementMethodToUse());
     }
 
 }

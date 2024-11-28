@@ -23,8 +23,11 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
 
         super(scanner, menuPrinter, preferences, wordReplacer);
 
-        getWordReplacer().setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
+    }
 
+    @Override
+    protected void initWordReplacer() {
+        getWordReplacer().setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
     }
 
     @Override
@@ -41,6 +44,17 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
         addMenuItemList(itemList);
     }
 
+    @Override
+    public void printPreferences() {
+        getMenuPrinter().printInfo("Similarity Algorithm: \t\t"
+                + getSimilarityAlgorithmToUse().toString());
+    }
+
+    @Override
+    public void resetPreferences() {
+        getWordReplacer().setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
+    }
+
     private SimilarityAlgorithm getSimilarityAlgorithmToUse() {
         return SimilarityAlgorithm
                 .valueOf(
@@ -51,17 +65,6 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
         getWordReplacer().setSimilarityAlgorithmToUse(similarityAlgorithm);
         getPreferences().put(SIMILARITY_ALGORITHM_KEY, similarityAlgorithm.name());
         getMenuPrinter().printSuccess("Similarity Algorithm set to: " + similarityAlgorithm.toString());
-    }
-
-    @Override
-    public void printPreferences() {
-        getMenuPrinter().printInfo("Similarity Algorithm: \t\t"
-                + getSimilarityAlgorithmToUse().toString());
-    }
-
-    @Override
-    public void resetPreferences() {
-        getWordReplacer().setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
     }
 
 }

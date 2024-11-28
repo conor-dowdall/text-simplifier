@@ -41,9 +41,6 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
         super(scanner, menuPrinter, preferences, wordReplacer);
 
-        getWordReplacer()
-                .setNumSimilarReplacementWordsToStore(getNumSimilarReplacementWordsToStore());
-
         this.similarityAlgorithmMenu = new SimilarityAlgorithmSettingsMenu(
                 scanner,
                 menuPrinter,
@@ -56,6 +53,12 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                 preferences,
                 wordReplacer);
 
+    }
+
+    @Override
+    protected void initWordReplacer() {
+        getWordReplacer()
+                .setNumSimilarReplacementWordsToStore(getNumSimilarReplacementWordsToStore());
     }
 
     @Override

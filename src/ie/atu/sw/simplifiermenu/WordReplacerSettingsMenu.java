@@ -21,9 +21,13 @@ public abstract class WordReplacerSettingsMenu extends SettingsMenu {
 
         this.wordReplacer = wordReplacer;
 
+        initWordReplacer();
+
     }
 
     protected WordReplacer getWordReplacer() {
         return wordReplacer;
     }
+
+    protected abstract void initWordReplacer();
 }
