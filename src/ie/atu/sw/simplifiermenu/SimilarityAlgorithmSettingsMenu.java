@@ -7,16 +7,13 @@ import java.util.prefs.Preferences;
 
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.menu.SettingsMenu;
 import ie.atu.sw.util.SimilarityAlgorithm;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
-public class SimilarityAlgorithmSettingsMenu extends SettingsMenu {
+public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
 
     private static final String SIMILARITY_ALGORITHM_KEY = "similarityAlgorithmToUse";
     private static final String SIMILARITY_ALGORITHM_DEFAULT = SimilarityAlgorithm.COSINE_SIMILARITY.name();
-
-    private WordReplacer wordReplacer;
 
     public SimilarityAlgorithmSettingsMenu(
             Scanner scanner,
@@ -24,10 +21,9 @@ public class SimilarityAlgorithmSettingsMenu extends SettingsMenu {
             Preferences preferences,
             WordReplacer wordReplacer) {
 
-        super("Similarity Algorithm", scanner, menuPrinter, preferences);
+        super(scanner, menuPrinter, preferences, wordReplacer);
 
-        this.wordReplacer = wordReplacer;
-        this.wordReplacer.setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
+        getWordReplacer().setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
 
     }
 
@@ -39,24 +35,22 @@ public class SimilarityAlgorithmSettingsMenu extends SettingsMenu {
                     new MenuItem(
                             String.valueOf(algorithm.ordinal() + 1),
                             algorithm.toString(),
-                            () -> {
-                                wordReplacer.setSimilarityAlgorithmToUse(algorithm);
-                                setSimilarityAlgorithmToUse(algorithm);
-                                getMenuPrinter().printSuccess("Similarity Algorithm set to: " + algorithm.toString());
-                            }));
+                            () -> setSimilarityAlgorithmToUse(algorithm)));
         }
 
         addMenuItemList(itemList);
     }
 
-    public SimilarityAlgorithm getSimilarityAlgorithmToUse() {
+    private SimilarityAlgorithm getSimilarityAlgorithmToUse() {
         return SimilarityAlgorithm
                 .valueOf(
                         getPreferences().get(SIMILARITY_ALGORITHM_KEY, SIMILARITY_ALGORITHM_DEFAULT));
     }
 
-    public void setSimilarityAlgorithmToUse(SimilarityAlgorithm similarityAlgorithm) {
+    private void setSimilarityAlgorithmToUse(SimilarityAlgorithm similarityAlgorithm) {
+        getWordReplacer().setSimilarityAlgorithmToUse(similarityAlgorithm);
         getPreferences().put(SIMILARITY_ALGORITHM_KEY, similarityAlgorithm.name());
+        getMenuPrinter().printSuccess("Similarity Algorithm set to: " + similarityAlgorithm.toString());
     }
 
     @Override
@@ -67,7 +61,7 @@ public class SimilarityAlgorithmSettingsMenu extends SettingsMenu {
 
     @Override
     public void resetPreferences() {
-        wordReplacer.setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
+        getWordReplacer().setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
     }
 
 }
