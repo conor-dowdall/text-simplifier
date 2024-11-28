@@ -11,10 +11,9 @@ import java.util.prefs.Preferences;
 import ie.atu.sw.console.ConsoleProgressMeter;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.menu.SettingsMenu;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
-public class SimplifierSettingsMenu extends SettingsMenu {
+public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
     private static final String WORD_EMBEDDINGS_FILE_NAME_KEY = "wordEmbeddingsFileName";
     private static final String WORD_EMBEDDINGS_FILE_NAME_DEFAULT = "../word-embeddings.txt";
@@ -31,9 +30,8 @@ public class SimplifierSettingsMenu extends SettingsMenu {
     private static final String NUM_SIMILAR_WORDS_KEY = "numSimilarReplacementWordsToStore";
     private static final int NUM_SIMILAR_WORDS_DEFAULT = 1;
 
-    private WordReplacer wordReplacer;
-    private SimilarityAlgorithmSettingsMenu similarityAlgorithmMenu;
-    private ReplacementMethodSettingsMenu replacementMethodMenu;
+    private final SimilarityAlgorithmSettingsMenu similarityAlgorithmMenu;
+    private final ReplacementMethodSettingsMenu replacementMethodMenu;
 
     public SimplifierSettingsMenu(
             Scanner scanner,
@@ -41,12 +39,10 @@ public class SimplifierSettingsMenu extends SettingsMenu {
             Preferences preferences,
             WordReplacer wordReplacer) {
 
-        super("Settings", scanner, menuPrinter, preferences);
+        super(scanner, menuPrinter, preferences, wordReplacer);
 
-        this.wordReplacer = wordReplacer;
-        this.wordReplacer
-                .setNumSimilarReplacementWordsToStore(
-                        getNumSimilarReplacementWordsToStore());
+        getWordReplacer()
+                .setNumSimilarReplacementWordsToStore(getNumSimilarReplacementWordsToStore());
 
         this.similarityAlgorithmMenu = new SimilarityAlgorithmSettingsMenu(
                 scanner,
@@ -139,7 +135,7 @@ public class SimplifierSettingsMenu extends SettingsMenu {
             }
         }
 
-        wordReplacer.loadWordEmbeddingsFile(fileName);
+        getWordReplacer().loadWordEmbeddingsFile(fileName);
 
         for (int i = CROSSOVER_TIME; i <= 100; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -195,7 +191,7 @@ public class SimplifierSettingsMenu extends SettingsMenu {
             }
         }
 
-        wordReplacer.loadReplacementWordsFile(fileName);
+        getWordReplacer().loadReplacementWordsFile(fileName);
 
         for (int i = CROSSOVER_TIME; i <= 100; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -290,7 +286,7 @@ public class SimplifierSettingsMenu extends SettingsMenu {
                 n = Integer.parseInt(input);
             }
 
-            wordReplacer.setNumSimilarReplacementWordsToStore(n);
+            getWordReplacer().setNumSimilarReplacementWordsToStore(n);
             setNumSimilarReplacementWordsToStore(n);
             getMenuPrinter().printSuccess("NUMBER of similar words to store = " + n);
         } catch (NumberFormatException e) {
@@ -346,7 +342,7 @@ public class SimplifierSettingsMenu extends SettingsMenu {
 
             getPreferences().clear();
 
-            wordReplacer.setNumSimilarReplacementWordsToStore(getNumSimilarReplacementWordsToStore());
+            getWordReplacer().setNumSimilarReplacementWordsToStore(getNumSimilarReplacementWordsToStore());
 
             similarityAlgorithmMenu.resetPreferences();
 

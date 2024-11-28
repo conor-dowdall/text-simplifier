@@ -116,8 +116,8 @@ public class WordReplacer {
         emptyWordEmbeddingMapSimilarWordList();
     }
 
-    public void setSimilarityAlgorithmToUse(SimilarityAlgorithm similarityAlgorithmToUse) {
-        similarityAlgorithmToUse = similarityAlgorithmToUse;
+    public void setSimilarityAlgorithmToUse(SimilarityAlgorithm similarityAlgorithm) {
+        similarityAlgorithmToUse = similarityAlgorithm;
         emptyWordEmbeddingMapSimilarWordList();
     }
 
@@ -146,6 +146,12 @@ public class WordReplacer {
     }
 
     public String replaceString(String string) {
+
+        // TESTS **********************
+        System.out.println(this.numSimilarReplacementWordsToStore);
+        System.out.println(this.similarityAlgorithmToUse);
+        System.out.println(this.replacementMethodToUse);
+
         StringBuilder replacedString = new StringBuilder();
         String[] stringParts = string.split(" ");
 

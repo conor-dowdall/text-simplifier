@@ -22,7 +22,9 @@ public class SimplifierMainMenu extends Menu {
             WordReplacer wordReplacer) {
 
         super("Simplifier", scanner, menuPrinter);
+
         this.wordReplacer = wordReplacer;
+
         settingsMenu = new SimplifierSettingsMenu(scanner, menuPrinter, preferences, wordReplacer);
 
     }
