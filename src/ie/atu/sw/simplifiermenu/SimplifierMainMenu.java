@@ -8,6 +8,7 @@ import java.util.prefs.Preferences;
 import ie.atu.sw.menu.Menu;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
+import ie.atu.sw.util.FileName;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierMainMenu extends Menu {
@@ -104,8 +105,21 @@ public class SimplifierMainMenu extends Menu {
                 settingsMenu.loadReplacementWordsFile();
             }
 
-            String inputTextFileName = settingsMenu.scanInputTextFileName();
-            String outputTextFileName = settingsMenu.scanOutputTextFileName();
+            String inputTextFileName = FileName.scanFileName(
+                    getScanner(),
+                    getMenuPrinter(),
+                    "INPUT FILE",
+                    settingsMenu.getInputTextFileName());
+
+            settingsMenu.setInputTextFileName(inputTextFileName);
+
+            String outputTextFileName = FileName.scanFileName(
+                    getScanner(),
+                    getMenuPrinter(),
+                    "OUTPUT FILE",
+                    settingsMenu.getOutputTextFileName());
+
+            settingsMenu.setOutputTextFileName(outputTextFileName);
 
             wordReplacer
                     .writeReplacedFile(

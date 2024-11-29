@@ -1,7 +1,5 @@
 package ie.atu.sw.simplifiermenu;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -11,6 +9,7 @@ import java.util.prefs.Preferences;
 import ie.atu.sw.console.ConsoleProgressMeter;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
+import ie.atu.sw.util.FileName;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
@@ -115,6 +114,46 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         addMenuItemList(itemList);
     }
 
+    private String getWordEmbeddingsFileName() {
+        return getPreferences().get(WORD_EMBEDDINGS_FILE_NAME_KEY, WORD_EMBEDDINGS_FILE_NAME_DEFAULT);
+    }
+
+    private void setWordEmbeddingsFileName(String fileName) {
+        getPreferences().put(WORD_EMBEDDINGS_FILE_NAME_KEY, fileName);
+    }
+
+    private String getReplacementWordsFileName() {
+        return getPreferences().get(REPLACEMENT_WORDS_FILE_NAME_KEY, REPLACEMENT_WORDS_FILE_NAME_DEFAULT);
+    }
+
+    private void setReplacementWordsFileName(String fileName) {
+        getPreferences().put(REPLACEMENT_WORDS_FILE_NAME_KEY, fileName);
+    }
+
+    String getInputTextFileName() {
+        return getPreferences().get(INPUT_TEXT_FILE_NAME_KEY, INPUT_TEXT_FILE_NAME_DEFAULT);
+    }
+
+    void setInputTextFileName(String fileName) {
+        getPreferences().put(INPUT_TEXT_FILE_NAME_KEY, fileName);
+    }
+
+    String getOutputTextFileName() {
+        return getPreferences().get(OUTPUT_TEXT_FILE_NAME_KEY, OUTPUT_TEXT_FILE_NAME_DEFAULT);
+    }
+
+    void setOutputTextFileName(String fileName) {
+        getPreferences().put(OUTPUT_TEXT_FILE_NAME_KEY, fileName);
+    }
+
+    private int getNumSimilarReplacementWordsToStore() {
+        return getPreferences().getInt(NUM_SIMILAR_WORDS_KEY, NUM_SIMILAR_WORDS_DEFAULT);
+    }
+
+    private void setNumSimilarReplacementWordsToStore(int n) {
+        getPreferences().putInt(NUM_SIMILAR_WORDS_KEY, n);
+    }
+
     private void loadWordEmbeddingsFileAndPrintMenu() {
         try {
             loadWordEmbeddingsFile();
@@ -125,9 +164,14 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         }
     }
 
-    public void loadWordEmbeddingsFile() throws IOException {
+    void loadWordEmbeddingsFile() throws IOException {
         int CROSSOVER_TIME = 99;
-        String fileName = scanWordEmbeddingsFileName();
+
+        String fileName = FileName.scanFileName(
+                getScanner(),
+                getMenuPrinter(),
+                "WORD EMBEDDINGS",
+                getWordEmbeddingsFileName());
 
         for (int i = 0; i <= CROSSOVER_TIME; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -139,36 +183,11 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         }
 
         getWordReplacer().loadWordEmbeddingsFile(fileName);
+        setWordEmbeddingsFileName(fileName);
 
         for (int i = CROSSOVER_TIME; i <= 100; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
         }
-    }
-
-    private String scanWordEmbeddingsFileName() throws FileNotFoundException {
-        String defaultFileName = getWordEmbeddingsFileName();
-        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultFileName);
-        getMenuPrinter().printWithUnderline("Enter WORD EMBEDDINGS file name: ");
-        String inputFileName = getScanner().nextLine();
-        if (inputFileName.isEmpty()) {
-            inputFileName = defaultFileName;
-        }
-        File file = new File(inputFileName);
-        if (!file.exists() || !file.isFile()) {
-            throw new FileNotFoundException("Cannot find WORD EMBEDDINGS file: " + inputFileName);
-        } else {
-            getMenuPrinter().printSuccess("WORD EMBEDDINGS text file = " + file.getAbsolutePath());
-            setWordEmbeddingsFileName(inputFileName);
-            return inputFileName;
-        }
-    }
-
-    private String getWordEmbeddingsFileName() {
-        return getPreferences().get(WORD_EMBEDDINGS_FILE_NAME_KEY, WORD_EMBEDDINGS_FILE_NAME_DEFAULT);
-    }
-
-    private void setWordEmbeddingsFileName(String fileName) {
-        getPreferences().put(WORD_EMBEDDINGS_FILE_NAME_KEY, fileName);
     }
 
     private void loadReplacementWordsFileAndPrintMenu() {
@@ -181,9 +200,14 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         }
     }
 
-    public void loadReplacementWordsFile() throws IOException {
+    void loadReplacementWordsFile() throws IOException {
         int CROSSOVER_TIME = 99;
-        String fileName = scanReplacementWordsFileName();
+
+        String fileName = FileName.scanFileName(
+                getScanner(),
+                getMenuPrinter(),
+                "REPLACEMENT WORDS",
+                getReplacementWordsFileName());
 
         for (int i = 0; i <= CROSSOVER_TIME; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -196,82 +220,11 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
         getWordReplacer().loadReplacementWordsFile(fileName);
 
+        setReplacementWordsFileName(fileName);
+
         for (int i = CROSSOVER_TIME; i <= 100; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
         }
-    }
-
-    private String scanReplacementWordsFileName() throws FileNotFoundException {
-        String defaultFileName = getReplacementWordsFileName();
-        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultFileName);
-        getMenuPrinter().printWithUnderline("Enter REPLACEMENT WORDS file name: ");
-        String inputFileName = getScanner().nextLine();
-        if (inputFileName.isEmpty()) {
-            inputFileName = defaultFileName;
-        }
-        File file = new File(inputFileName);
-        if (!file.exists() || !file.isFile()) {
-            throw new FileNotFoundException("Cannot find REPLACEMENT WORDS file: " + inputFileName);
-        } else {
-            getMenuPrinter().printSuccess("REPLACEMENT WORDS text file = " + file.getAbsolutePath());
-            setReplacementWordsFileName(inputFileName);
-            return inputFileName;
-        }
-    }
-
-    private String getReplacementWordsFileName() {
-        return getPreferences().get(REPLACEMENT_WORDS_FILE_NAME_KEY, REPLACEMENT_WORDS_FILE_NAME_DEFAULT);
-    }
-
-    private void setReplacementWordsFileName(String fileName) {
-        getPreferences().put(REPLACEMENT_WORDS_FILE_NAME_KEY, fileName);
-    }
-
-    public String scanInputTextFileName() throws FileNotFoundException {
-        String defaultFileName = getInputTextFileName();
-        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultFileName);
-        getMenuPrinter().printWithUnderline("Enter INPUT TEXT file name: ");
-        String inputFileName = getScanner().nextLine();
-        if (inputFileName.isEmpty()) {
-            inputFileName = defaultFileName;
-        }
-        File file = new File(inputFileName);
-        if (!file.exists() || !file.isFile()) {
-            throw new FileNotFoundException("Cannot find INPUT TEXT file: " + inputFileName);
-        } else {
-            getMenuPrinter().printSuccess("INPUT TEXT file = " + inputFileName);
-            setInputTextFileName(inputFileName);
-            return inputFileName;
-        }
-    }
-
-    private String getInputTextFileName() {
-        return getPreferences().get(INPUT_TEXT_FILE_NAME_KEY, INPUT_TEXT_FILE_NAME_DEFAULT);
-    }
-
-    private void setInputTextFileName(String fileName) {
-        getPreferences().put(INPUT_TEXT_FILE_NAME_KEY, fileName);
-    }
-
-    public String scanOutputTextFileName() {
-        String defaultOutputTextFileName = getOutputTextFileName();
-        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultOutputTextFileName);
-        getMenuPrinter().printWithUnderline("Enter OUTPUT TEXT file name: ");
-        String outputTextFileName = getScanner().nextLine();
-        if (outputTextFileName.isEmpty()) {
-            outputTextFileName = defaultOutputTextFileName;
-        }
-        getMenuPrinter().printSuccess("OUTPUT TEXT file = " + outputTextFileName);
-        setOutputTextFileName(outputTextFileName);
-        return outputTextFileName;
-    }
-
-    private String getOutputTextFileName() {
-        return getPreferences().get(OUTPUT_TEXT_FILE_NAME_KEY, OUTPUT_TEXT_FILE_NAME_DEFAULT);
-    }
-
-    private void setOutputTextFileName(String fileName) {
-        getPreferences().put(OUTPUT_TEXT_FILE_NAME_KEY, fileName);
     }
 
     public void scanNumSimilarReplacementWordsToStore() {
@@ -296,14 +249,6 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
             getMenuPrinter().printError(e.getMessage());
         }
 
-    }
-
-    private int getNumSimilarReplacementWordsToStore() {
-        return getPreferences().getInt(NUM_SIMILAR_WORDS_KEY, NUM_SIMILAR_WORDS_DEFAULT);
-    }
-
-    private void setNumSimilarReplacementWordsToStore(int n) {
-        getPreferences().putInt(NUM_SIMILAR_WORDS_KEY, n);
     }
 
     @Override

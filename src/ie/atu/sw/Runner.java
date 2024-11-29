@@ -10,10 +10,14 @@ import ie.atu.sw.wordreplacer.WordReplacer;
 public class Runner {
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
         MenuPrinter menuPrinter = new ConsoleMenuPrinter();
         WordReplacer wordReplacer = new WordReplacer();
-        new SimplifierMainMenu(scanner, menuPrinter, wordReplacer).printMenuAndAcceptChoice();
+
+        new SimplifierMainMenu(scanner, menuPrinter, wordReplacer)
+                .printMenuAndAcceptChoice();
+
     }
 
 }

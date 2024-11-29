@@ -71,17 +71,6 @@ public class WordReplacer {
     private SimilarityAlgorithm similarityAlgorithmToUse = SimilarityAlgorithm.COSINE_SIMILARITY;
     private ReplacementMethod replacementMethodToUse = ReplacementMethod.MOST_SIMILAR;
 
-    public WordReplacer() {
-    }
-
-    public WordReplacer(
-            int numSimilarReplacementWordsToStore,
-            SimilarityAlgorithm similarityAlgorithmToUse) {
-
-        setNumSimilarReplacementWordsToStore(numSimilarReplacementWordsToStore);
-        setSimilarityAlgorithmToUse(similarityAlgorithmToUse);
-    }
-
     public void loadWordEmbeddingsFile(String wordEmbeddingsFileName) throws IOException {
         wordEmbeddingMap = WordEmbedding.getWordEmbeddingMap(wordEmbeddingsFileName);
     }
