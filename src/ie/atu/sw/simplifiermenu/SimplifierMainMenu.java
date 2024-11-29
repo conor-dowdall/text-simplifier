@@ -8,7 +8,7 @@ import java.util.prefs.Preferences;
 import ie.atu.sw.menu.Menu;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.util.FileName;
+import ie.atu.sw.util.ConsoleInputReader;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierMainMenu extends Menu {
@@ -32,7 +32,9 @@ public class SimplifierMainMenu extends Menu {
 
     @Override
     protected void createMenuItems() {
+
         List<MenuItem> itemList = List.of(
+
                 new MenuItem(
                         "1",
                         "Launch Simplify File",
@@ -41,6 +43,7 @@ public class SimplifierMainMenu extends Menu {
                             launchSimplifyTextFile();
                             printMenuAndAcceptChoice();
                         }),
+
                 new MenuItem(
                         "2",
                         "Launch Simplify Text",
@@ -49,14 +52,33 @@ public class SimplifierMainMenu extends Menu {
                             launchSimplifyText();
                             printMenuAndAcceptChoice();
                         }),
+
                 new MenuItem(
                         "3",
                         "Load Word-Embeddings File",
-                        this::loadWordEmbeddingsFileAndPrintMenu),
+                        () -> {
+                            try {
+                                settingsMenu.loadWordEmbeddingsFile();
+                            } catch (IOException e) {
+                                getMenuPrinter().printError(e.getMessage());
+                            } finally {
+                                printMenuAndAcceptChoice();
+                            }
+                        }),
+
                 new MenuItem(
                         "4",
                         "Load Replacement-Words File",
-                        this::loadReplacementWordsFileAndPrintMenu),
+                        () -> {
+                            try {
+                                settingsMenu.loadReplacementWordsFile();
+                            } catch (IOException e) {
+                                getMenuPrinter().printError(e.getMessage());
+                            } finally {
+                                printMenuAndAcceptChoice();
+                            }
+                        }),
+
                 new MenuItem(
                         "s",
                         "Settings",
@@ -64,37 +86,20 @@ public class SimplifierMainMenu extends Menu {
                             launchSettingsMenu();
                             printMenuAndAcceptChoice();
                         }),
+
                 new MenuItem(
                         "q",
                         "Quit",
                         this::quitProgram));
 
         addMenuItemList(itemList);
-    }
 
-    private void loadWordEmbeddingsFileAndPrintMenu() {
-        try {
-            settingsMenu.loadWordEmbeddingsFile();
-        } catch (IOException e) {
-            getMenuPrinter().printError(e.getMessage());
-        } finally {
-            printMenuAndAcceptChoice();
-        }
-    }
-
-    private void loadReplacementWordsFileAndPrintMenu() {
-        try {
-            settingsMenu.loadReplacementWordsFile();
-        } catch (IOException e) {
-            getMenuPrinter().printError(e.getMessage());
-        } finally {
-            printMenuAndAcceptChoice();
-        }
     }
 
     private void launchSimplifyTextFile() {
 
         try {
+
             getMenuPrinter().printTitle("Simplify File");
 
             if (wordReplacer.isWordEmbeddingMapNull()) {
@@ -105,19 +110,21 @@ public class SimplifierMainMenu extends Menu {
                 settingsMenu.loadReplacementWordsFile();
             }
 
-            String inputTextFileName = FileName.scanFileName(
+            String inputTextFileName = ConsoleInputReader.scanFileName(
                     getScanner(),
                     getMenuPrinter(),
                     "INPUT FILE",
-                    settingsMenu.getInputTextFileName());
+                    settingsMenu.getInputTextFileName(),
+                    true);
 
             settingsMenu.setInputTextFileName(inputTextFileName);
 
-            String outputTextFileName = FileName.scanFileName(
+            String outputTextFileName = ConsoleInputReader.scanFileName(
                     getScanner(),
                     getMenuPrinter(),
                     "OUTPUT FILE",
-                    settingsMenu.getOutputTextFileName());
+                    settingsMenu.getOutputTextFileName(),
+                    false);
 
             settingsMenu.setOutputTextFileName(outputTextFileName);
 
@@ -127,6 +134,7 @@ public class SimplifierMainMenu extends Menu {
                             outputTextFileName);
 
             getMenuPrinter().printSuccess("OUTPUT TEXT file written (" + outputTextFileName + ").");
+
         } catch (Exception e) {
             getMenuPrinter().printError(e.getMessage());
         }
@@ -135,6 +143,7 @@ public class SimplifierMainMenu extends Menu {
     private void launchSimplifyText() {
 
         try {
+
             getMenuPrinter().printTitle("Simplify Text");
 
             if (wordReplacer.isWordEmbeddingMapNull()) {

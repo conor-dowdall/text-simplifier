@@ -9,7 +9,7 @@ import java.util.prefs.Preferences;
 import ie.atu.sw.console.ConsoleProgressMeter;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.util.FileName;
+import ie.atu.sw.util.ConsoleInputReader;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
@@ -62,15 +62,35 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
     @Override
     protected void createMenuItems() {
+
         List<MenuItem> itemList = List.of(
+
                 new MenuItem(
                         "1",
                         "Load Word-Embeddings File",
-                        this::loadWordEmbeddingsFileAndPrintMenu),
+                        () -> {
+                            try {
+                                loadWordEmbeddingsFile();
+                            } catch (IOException e) {
+                                getMenuPrinter().printError(e.getMessage());
+                            } finally {
+                                printMenuAndAcceptChoice();
+                            }
+                        }),
+
                 new MenuItem(
                         "2",
                         "Load Replacement-Words File",
-                        this::loadReplacementWordsFileAndPrintMenu),
+                        () -> {
+                            try {
+                                loadReplacementWordsFile();
+                            } catch (IOException e) {
+                                getMenuPrinter().printError(e.getMessage());
+                            } finally {
+                                printMenuAndAcceptChoice();
+                            }
+                        }),
+
                 new MenuItem(
                         "3",
                         "Set Number of Similar-Replacement-Words to Store",
@@ -78,6 +98,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                             scanNumSimilarReplacementWordsToStore();
                             printMenuAndAcceptChoice();
                         }),
+
                 new MenuItem(
                         "4",
                         "Set Similarity Algorithm to Use",
@@ -85,6 +106,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                             similarityAlgorithmMenu.printMenuAndAcceptChoice();
                             printMenuAndAcceptChoice();
                         }),
+
                 new MenuItem(
                         "5",
                         "Set String Replacement Method to Use",
@@ -92,6 +114,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                             replacementMethodMenu.printMenuAndAcceptChoice();
                             printMenuAndAcceptChoice();
                         }),
+
                 new MenuItem(
                         "r",
                         "Reset Settings to Default Values",
@@ -99,6 +122,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                             resetPreferences();
                             printMenuAndAcceptChoice();
                         }),
+
                 new MenuItem(
                         "s",
                         "Print Preferences",
@@ -106,12 +130,14 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                             printPreferences();
                             printMenuAndAcceptChoice();
                         }),
+
                 new MenuItem(
                         "q",
                         "Close Settings",
                         this::closeSettings));
 
         addMenuItemList(itemList);
+
     }
 
     private String getWordEmbeddingsFileName() {
@@ -154,24 +180,15 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         getPreferences().putInt(NUM_SIMILAR_WORDS_KEY, n);
     }
 
-    private void loadWordEmbeddingsFileAndPrintMenu() {
-        try {
-            loadWordEmbeddingsFile();
-        } catch (IOException e) {
-            getMenuPrinter().printError(e.getMessage());
-        } finally {
-            printMenuAndAcceptChoice();
-        }
-    }
-
     void loadWordEmbeddingsFile() throws IOException {
         int CROSSOVER_TIME = 99;
 
-        String fileName = FileName.scanFileName(
+        String fileName = ConsoleInputReader.scanFileName(
                 getScanner(),
                 getMenuPrinter(),
                 "WORD EMBEDDINGS",
-                getWordEmbeddingsFileName());
+                getWordEmbeddingsFileName(),
+                true);
 
         for (int i = 0; i <= CROSSOVER_TIME; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -183,6 +200,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         }
 
         getWordReplacer().loadWordEmbeddingsFile(fileName);
+
         setWordEmbeddingsFileName(fileName);
 
         for (int i = CROSSOVER_TIME; i <= 100; i++) {
@@ -190,24 +208,15 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         }
     }
 
-    private void loadReplacementWordsFileAndPrintMenu() {
-        try {
-            loadReplacementWordsFile();
-        } catch (IOException e) {
-            getMenuPrinter().printError(e.getMessage());
-        } finally {
-            printMenuAndAcceptChoice();
-        }
-    }
-
     void loadReplacementWordsFile() throws IOException {
         int CROSSOVER_TIME = 99;
 
-        String fileName = FileName.scanFileName(
+        String fileName = ConsoleInputReader.scanFileName(
                 getScanner(),
                 getMenuPrinter(),
                 "REPLACEMENT WORDS",
-                getReplacementWordsFileName());
+                getReplacementWordsFileName(),
+                true);
 
         for (int i = 0; i <= CROSSOVER_TIME; i++) {
             ConsoleProgressMeter.printProgress(i, 100);
@@ -228,26 +237,18 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     }
 
     public void scanNumSimilarReplacementWordsToStore() {
-        int defaultN = getNumSimilarReplacementWordsToStore();
-        getMenuPrinter().printInfo("Hit ENTER for default: " + defaultN);
-        getMenuPrinter().printWithUnderline("Enter NUMBER of similar words to store: ");
 
-        String input = getScanner().nextLine();
-        int n;
+        int n = ConsoleInputReader.scanInt(
+                getScanner(),
+                getMenuPrinter(),
+                "SIMILAR WORDS TO STORE",
+                getNumSimilarReplacementWordsToStore());
 
-        try {
-            if (input.isEmpty()) {
-                n = defaultN;
-            } else {
-                n = Integer.parseInt(input);
-            }
+        getWordReplacer().setNumSimilarReplacementWordsToStore(n);
 
-            getWordReplacer().setNumSimilarReplacementWordsToStore(n);
-            setNumSimilarReplacementWordsToStore(n);
-            getMenuPrinter().printSuccess("NUMBER of similar words to store = " + n);
-        } catch (NumberFormatException e) {
-            getMenuPrinter().printError(e.getMessage());
-        }
+        setNumSimilarReplacementWordsToStore(n);
+
+        getMenuPrinter().printInfo("SIMILAR WORDS TO STORE = " + n);
 
     }
 
@@ -299,6 +300,8 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
             getMenuPrinter().printSuccess("Preferences reset to default values");
 
             printPreferences();
+
+            getMenuPrinter().printWarning("Any Previous Word Embeddings and Replacement Words Are Still Loaded");
 
         } catch (BackingStoreException e) {
             getMenuPrinter().printError(e.getMessage());
