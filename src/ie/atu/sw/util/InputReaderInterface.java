@@ -2,7 +2,7 @@ package ie.atu.sw.util;
 
 import java.io.FileNotFoundException;
 
-public interface InputReader {
+public interface InputReaderInterface {
 
         String getFileName(
                         String fileNameDescription,

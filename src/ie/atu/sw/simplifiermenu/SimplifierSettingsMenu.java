@@ -7,8 +7,8 @@ import java.util.prefs.Preferences;
 
 import ie.atu.sw.console.ConsoleProgressMeter;
 import ie.atu.sw.menu.MenuItem;
-import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.util.InputReader;
+import ie.atu.sw.util.InputReaderInterface;
+import ie.atu.sw.util.MenuPrinterInterface;
 import ie.atu.sw.wordembedding.WordEmbeddingMap;
 import ie.atu.sw.wordreplacer.ReplacementWordSet;
 import ie.atu.sw.wordreplacer.WordReplacer;
@@ -34,8 +34,8 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     private final ReplacementMethodSettingsMenu replacementMethodMenu;
 
     public SimplifierSettingsMenu(
-            InputReader inputReader,
-            MenuPrinter menuPrinter,
+            InputReaderInterface inputReader,
+            MenuPrinterInterface menuPrinter,
             Preferences preferences,
             WordReplacer wordReplacer) {
 

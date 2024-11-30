@@ -1,6 +1,6 @@
 package ie.atu.sw.util;
 
-public interface Printer {
+public interface PrinterInterface {
 
     void printTitle(String title);
 

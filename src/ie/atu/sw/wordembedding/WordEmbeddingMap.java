@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ie.atu.sw.util.FileParser;
-import ie.atu.sw.wordreplacer.WordEmbeddingMapInterface;
+import ie.atu.sw.util.WordEmbeddingMapInterface;
 
 public record WordEmbeddingMap(Map<String, WordEmbedding> wordEmbeddingMap) implements WordEmbeddingMapInterface {
 

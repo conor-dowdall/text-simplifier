@@ -2,9 +2,9 @@ package ie.atu.sw.simplifiermenu;
 
 import java.util.prefs.Preferences;
 
-import ie.atu.sw.menu.MenuPrinter;
 import ie.atu.sw.menu.SettingsMenu;
-import ie.atu.sw.util.InputReader;
+import ie.atu.sw.util.InputReaderInterface;
+import ie.atu.sw.util.MenuPrinterInterface;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public abstract class WordReplacerSettingsMenu extends SettingsMenu {
@@ -12,8 +12,8 @@ public abstract class WordReplacerSettingsMenu extends SettingsMenu {
     private final WordReplacer wordReplacer;
 
     public WordReplacerSettingsMenu(
-            InputReader inputReader,
-            MenuPrinter menuPrinter,
+            InputReaderInterface inputReader,
+            MenuPrinterInterface menuPrinter,
             Preferences preferences,
             WordReplacer wordReplacer) {
 

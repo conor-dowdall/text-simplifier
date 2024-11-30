@@ -3,16 +3,17 @@ package ie.atu.sw.menu;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import ie.atu.sw.util.InputReader;
+import ie.atu.sw.util.InputReaderInterface;
+import ie.atu.sw.util.MenuPrinterInterface;
 
 public abstract class Menu {
 
     private final String title;
-    private final InputReader inputReader;
-    private final MenuPrinter menuPrinter;
+    private final InputReaderInterface inputReader;
+    private final MenuPrinterInterface menuPrinter;
     private final LinkedHashMap<String, MenuItem> shortcutMap = new LinkedHashMap<>();
 
-    public Menu(String title, InputReader inputReader, MenuPrinter menuPrinter) {
+    public Menu(String title, InputReaderInterface inputReader, MenuPrinterInterface menuPrinter) {
         this.title = title;
         this.inputReader = inputReader;
         this.menuPrinter = menuPrinter;
@@ -24,11 +25,11 @@ public abstract class Menu {
         return title;
     }
 
-    protected MenuPrinter getMenuPrinter() {
+    protected MenuPrinterInterface getMenuPrinter() {
         return menuPrinter;
     }
 
-    protected InputReader getInputReader() {
+    protected InputReaderInterface getInputReader() {
         return inputReader;
     }
 

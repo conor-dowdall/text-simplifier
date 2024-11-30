@@ -2,7 +2,8 @@ package ie.atu.sw.menu;
 
 import java.util.prefs.Preferences;
 
-import ie.atu.sw.util.InputReader;
+import ie.atu.sw.util.InputReaderInterface;
+import ie.atu.sw.util.MenuPrinterInterface;
 
 public abstract class SettingsMenu extends Menu {
 
@@ -10,8 +11,8 @@ public abstract class SettingsMenu extends Menu {
 
     public SettingsMenu(
             String title,
-            InputReader inputReader,
-            MenuPrinter menuPrinter,
+            InputReaderInterface inputReader,
+            MenuPrinterInterface menuPrinter,
             Preferences preferences) {
 
         super(title, inputReader, menuPrinter);

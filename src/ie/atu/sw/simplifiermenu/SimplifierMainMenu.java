@@ -6,8 +6,8 @@ import java.util.prefs.Preferences;
 
 import ie.atu.sw.menu.Menu;
 import ie.atu.sw.menu.MenuItem;
-import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.util.InputReader;
+import ie.atu.sw.util.InputReaderInterface;
+import ie.atu.sw.util.MenuPrinterInterface;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierMainMenu extends Menu {
@@ -17,8 +17,8 @@ public class SimplifierMainMenu extends Menu {
     private final Preferences preferences = Preferences.userNodeForPackage(SimplifierMainMenu.class);
 
     public SimplifierMainMenu(
-            InputReader inputReader,
-            MenuPrinter menuPrinter,
+            InputReaderInterface inputReader,
+            MenuPrinterInterface menuPrinter,
             WordReplacer wordReplacer) {
 
         super("Simplifier", inputReader, menuPrinter);

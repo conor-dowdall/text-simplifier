@@ -1,4 +1,4 @@
-package ie.atu.sw.wordreplacer;
+package ie.atu.sw.util;
 
 import java.util.Set;
 

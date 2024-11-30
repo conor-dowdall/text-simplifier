@@ -3,8 +3,9 @@ package ie.atu.sw.menu;
 import java.util.Collection;
 
 import ie.atu.sw.console.ConsoleColor;
+import ie.atu.sw.util.MenuPrinterInterface;
 
-public class ConsoleMenuPrinter implements MenuPrinter {
+public class ConsoleMenuPrinter implements MenuPrinterInterface {
 
     /**
      * print a stylized title to the terminal

@@ -4,15 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import ie.atu.sw.util.InputReader;
-import ie.atu.sw.util.Printer;
+import ie.atu.sw.util.InputReaderInterface;
+import ie.atu.sw.util.PrinterInterface;
 
-public class ConsoleInputReader implements InputReader {
+public class ConsoleInputReader implements InputReaderInterface {
 
     Scanner scanner;
-    Printer printer;
+    PrinterInterface printer;
 
-    public ConsoleInputReader(Scanner scanner, Printer printer) {
+    public ConsoleInputReader(Scanner scanner, PrinterInterface printer) {
         this.scanner = scanner;
         this.printer = printer;
     }

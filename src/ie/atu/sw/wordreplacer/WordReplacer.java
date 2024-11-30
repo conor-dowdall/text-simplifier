@@ -10,7 +10,9 @@ import java.util.PriorityQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ie.atu.sw.util.ReplacementWordSetInterface;
 import ie.atu.sw.util.SimilarityAlgorithm;
+import ie.atu.sw.util.WordEmbeddingMapInterface;
 import ie.atu.sw.wordembedding.WordEmbedding;
 import ie.atu.sw.wordembedding.WordEmbeddingMap;
 import ie.atu.sw.wordembedding.WordEmbeddingSimilarity;

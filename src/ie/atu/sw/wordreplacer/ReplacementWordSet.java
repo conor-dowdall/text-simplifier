@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import ie.atu.sw.util.FileParser;
+import ie.atu.sw.util.ReplacementWordSetInterface;
 
 public record ReplacementWordSet(Set<String> replacementWordSet) implements ReplacementWordSetInterface {
 

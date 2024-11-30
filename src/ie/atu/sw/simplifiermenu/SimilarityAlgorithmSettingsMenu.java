@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.prefs.Preferences;
 
 import ie.atu.sw.menu.MenuItem;
-import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.util.InputReader;
+import ie.atu.sw.util.InputReaderInterface;
+import ie.atu.sw.util.MenuPrinterInterface;
 import ie.atu.sw.util.SimilarityAlgorithm;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
@@ -16,8 +16,8 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
     private static final String SIMILARITY_ALGORITHM_DEFAULT = SimilarityAlgorithm.COSINE_SIMILARITY.name();
 
     public SimilarityAlgorithmSettingsMenu(
-            InputReader inputReader,
-            MenuPrinter menuPrinter,
+            InputReaderInterface inputReader,
+            MenuPrinterInterface menuPrinter,
             Preferences preferences,
             WordReplacer wordReplacer) {
 
