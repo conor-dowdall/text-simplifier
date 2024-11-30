@@ -27,7 +27,7 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
 
     @Override
     protected void initWordReplacer() {
-        getWordReplacer().setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
+        getWordReplacer().setSimilarityAlgorithm(getSimilarityAlgorithmToUse());
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
 
     @Override
     public void resetPreferences() {
-        getWordReplacer().setSimilarityAlgorithmToUse(getSimilarityAlgorithmToUse());
+        getWordReplacer().setSimilarityAlgorithm(getSimilarityAlgorithmToUse());
     }
 
     private SimilarityAlgorithm getSimilarityAlgorithmToUse() {
@@ -62,7 +62,7 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
     }
 
     private void setSimilarityAlgorithmToUse(SimilarityAlgorithm similarityAlgorithm) {
-        getWordReplacer().setSimilarityAlgorithmToUse(similarityAlgorithm);
+        getWordReplacer().setSimilarityAlgorithm(similarityAlgorithm);
         getPreferences().put(SIMILARITY_ALGORITHM_KEY, similarityAlgorithm.name());
         getMenuPrinter().printSuccess("Similarity Algorithm set to: " + similarityAlgorithm.toString());
     }

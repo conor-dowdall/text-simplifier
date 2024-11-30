@@ -27,7 +27,7 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
 
     @Override
     protected void initWordReplacer() {
-        getWordReplacer().setReplacementMethodToUse(getReplacementMethodToUse());
+        getWordReplacer().setReplacementMethod(getReplacementMethodToUse());
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
 
     @Override
     public void resetPreferences() {
-        getWordReplacer().setReplacementMethodToUse(getReplacementMethodToUse());
+        getWordReplacer().setReplacementMethod(getReplacementMethodToUse());
     }
 
     public ReplacementMethod getReplacementMethodToUse() {
@@ -64,7 +64,7 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
     }
 
     public void setReplacementMethodToUse(ReplacementMethod replacementMethod) {
-        getWordReplacer().setReplacementMethodToUse(replacementMethod);
+        getWordReplacer().setReplacementMethod(replacementMethod);
         getPreferences().put(REPLACEMENT_METHOD_KEY, replacementMethod.name());
         getMenuPrinter().printSuccess("Replacement Method set to: " + replacementMethod.toString());
     }

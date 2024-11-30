@@ -9,6 +9,8 @@ import ie.atu.sw.console.ConsoleProgressMeter;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
 import ie.atu.sw.util.InputReader;
+import ie.atu.sw.wordembedding.WordEmbeddingMap;
+import ie.atu.sw.wordreplacer.ReplacementWordSet;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
@@ -56,7 +58,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     @Override
     protected void initWordReplacer() {
         getWordReplacer()
-                .setNumSimilarReplacementWordsToStore(getNumSimilarReplacementWordsToStore());
+                .setSimilarReplacementWords(getNumSimilarReplacementWordsToStore());
     }
 
     @Override
@@ -196,7 +198,11 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
             }
         }
 
-        getWordReplacer().loadWordEmbeddingsFile(fileName);
+        getWordReplacer()
+                .setWordEmbeddingsMap(
+                        new WordEmbeddingMap(
+                                WordEmbeddingMap
+                                        .getMap(fileName, ", ")));
 
         setWordEmbeddingsFileName(fileName);
 
@@ -222,7 +228,11 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
             }
         }
 
-        getWordReplacer().loadReplacementWordsFile(fileName);
+        getWordReplacer()
+                .setReplacementWordsSet(
+                        new ReplacementWordSet(
+                                ReplacementWordSet
+                                        .getSet(fileName, ", ")));
 
         setReplacementWordsFileName(fileName);
 
@@ -237,7 +247,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                 "SIMILAR WORDS TO STORE",
                 getNumSimilarReplacementWordsToStore());
 
-        getWordReplacer().setNumSimilarReplacementWordsToStore(n);
+        getWordReplacer().setSimilarReplacementWords(n);
 
         setNumSimilarReplacementWordsToStore(n);
 
@@ -284,7 +294,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
             getPreferences().clear();
 
-            getWordReplacer().setNumSimilarReplacementWordsToStore(getNumSimilarReplacementWordsToStore());
+            getWordReplacer().setSimilarReplacementWords(getNumSimilarReplacementWordsToStore());
 
             similarityAlgorithmMenu.resetPreferences();
 

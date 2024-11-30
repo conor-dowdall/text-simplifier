@@ -6,37 +6,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ie.atu.sw.util.SimilarityAlgorithm;
 import ie.atu.sw.wordembedding.WordEmbedding;
+import ie.atu.sw.wordembedding.WordEmbeddingMap;
 import ie.atu.sw.wordembedding.WordEmbeddingSimilarity;
 
 public class WordReplacer {
-
-    public static Set<String> getReplacementWordSet(String fileName) throws IOException {
-        String delimiter = ", ";
-
-        Set<String> replacementWordSet = new HashSet<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(delimiter);
-                for (int i = 0; i < parts.length; i++) {
-                    replacementWordSet.add(parts[i]);
-                }
-            }
-        }
-
-        return replacementWordSet;
-    }
 
     public static PriorityQueue<WordEmbeddingSimilarity> getTopNSimilar(int n, boolean isHigherMoreSimilar) {
         if (isHigherMoreSimilar) {
@@ -64,16 +43,12 @@ public class WordReplacer {
         }
     }
 
-    private Map<String, WordEmbedding> wordEmbeddingMap;
-    private Set<String> replacementWordSet;
+    private WordEmbeddingMap wordEmbeddingMap;
+    private ReplacementWordSet replacementWordSet;
 
-    private int numSimilarReplacementWordsToStore = 1;
-    private SimilarityAlgorithm similarityAlgorithmToUse = SimilarityAlgorithm.COSINE_SIMILARITY;
-    private ReplacementMethod replacementMethodToUse = ReplacementMethod.MOST_SIMILAR;
-
-    public void loadWordEmbeddingsFile(String wordEmbeddingsFileName) throws IOException {
-        wordEmbeddingMap = WordEmbedding.getWordEmbeddingMap(wordEmbeddingsFileName);
-    }
+    private int similarReplacementWords = 1;
+    private SimilarityAlgorithm similarityAlgorithm = SimilarityAlgorithm.COSINE_SIMILARITY;
+    private ReplacementMethod replacementMethod = ReplacementMethod.MOST_SIMILAR;
 
     public boolean isWordEmbeddingMapNull() {
         if (wordEmbeddingMap == null)
@@ -83,15 +58,10 @@ public class WordReplacer {
 
     private void emptyWordEmbeddingMapSimilarWordList() {
         if (wordEmbeddingMap != null) {
-            for (WordEmbedding wordEmbedding : wordEmbeddingMap.values()) {
+            for (WordEmbedding wordEmbedding : wordEmbeddingMap.getEmbeddings()) {
                 wordEmbedding.emptySimilarWordList();
             }
         }
-    }
-
-    public void loadReplacementWordsFile(String replacementWordsFileName) throws IOException {
-        replacementWordSet = WordReplacer.getReplacementWordSet(replacementWordsFileName);
-        emptyWordEmbeddingMapSimilarWordList();
     }
 
     public boolean isReplacementWordSetNull() {
@@ -100,18 +70,26 @@ public class WordReplacer {
         return false;
     }
 
-    public void setNumSimilarReplacementWordsToStore(int n) {
-        numSimilarReplacementWordsToStore = n;
+    public void setWordEmbeddingsMap(WordEmbeddingMap wordEmbeddingMap) {
+        this.wordEmbeddingMap = wordEmbeddingMap;
+    }
+
+    public void setReplacementWordsSet(ReplacementWordSet replacementWordSet) {
+        this.replacementWordSet = replacementWordSet;
+    }
+
+    public void setSimilarReplacementWords(int similarReplacementWords) {
+        this.similarReplacementWords = similarReplacementWords;
         emptyWordEmbeddingMapSimilarWordList();
     }
 
-    public void setSimilarityAlgorithmToUse(SimilarityAlgorithm similarityAlgorithm) {
-        similarityAlgorithmToUse = similarityAlgorithm;
+    public void setSimilarityAlgorithm(SimilarityAlgorithm similarityAlgorithm) {
+        this.similarityAlgorithm = similarityAlgorithm;
         emptyWordEmbeddingMapSimilarWordList();
     }
 
-    public void setReplacementMethodToUse(ReplacementMethod replacementMethod) {
-        replacementMethodToUse = replacementMethod;
+    public void setReplacementMethod(ReplacementMethod replacementMethod) {
+        this.replacementMethod = replacementMethod;
         emptyWordEmbeddingMapSimilarWordList();
     }
 
@@ -173,14 +151,14 @@ public class WordReplacer {
     }
 
     public String replaceStringIfNotInReplacementSet(String string) {
-        if (!replacementWordSet.contains(string)) {
-            WordEmbedding stringEmbedding = wordEmbeddingMap.get(string);
+        if (!replacementWordSet.containsWord(string)) {
+            WordEmbedding stringEmbedding = wordEmbeddingMap.getWordEmbedding(string);
 
             if (stringEmbedding != null) {
                 if (stringEmbedding.similarWords().isEmpty()) {
                     addSimilarReplacementWords(stringEmbedding);
                 }
-                return replacementMethodToUse.getReplacement(stringEmbedding.similarWords());
+                return replacementMethod.getReplacement(stringEmbedding.similarWords());
             }
 
         }
@@ -190,21 +168,21 @@ public class WordReplacer {
 
     private void addSimilarReplacementWords(WordEmbedding wordEmbedding) {
         PriorityQueue<WordEmbeddingSimilarity> topNWords = getTopNSimilar(
-                numSimilarReplacementWordsToStore,
-                similarityAlgorithmToUse.isHigherMoreSimilar());
+                similarReplacementWords,
+                similarityAlgorithm.isHigherMoreSimilar());
 
-        for (String replacementWord : replacementWordSet) {
-            WordEmbedding replacementWordEmbedding = wordEmbeddingMap.get(replacementWord);
+        for (String replacementWord : replacementWordSet.replacementWordSet()) {
+            WordEmbedding replacementWordEmbedding = wordEmbeddingMap.getWordEmbedding(replacementWord);
 
             if (replacementWordEmbedding != null) {
                 topNWords.offer(
                         new WordEmbeddingSimilarity(
                                 replacementWord,
-                                similarityAlgorithmToUse.calculate(
+                                similarityAlgorithm.calculate(
                                         replacementWordEmbedding.embedding(),
                                         wordEmbedding.embedding())));
 
-                if (topNWords.size() > numSimilarReplacementWordsToStore) {
+                if (topNWords.size() > similarReplacementWords) {
                     topNWords.poll();
                 }
             }
