@@ -4,17 +4,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import ie.atu.sw.menu.MenuPrinter;
 import ie.atu.sw.util.InputReader;
+import ie.atu.sw.util.Printer;
 
 public class ConsoleInputReader implements InputReader {
 
     Scanner scanner;
-    MenuPrinter menuPrinter;
+    Printer printer;
 
-    public ConsoleInputReader(Scanner scanner, MenuPrinter menuPrinter) {
+    public ConsoleInputReader(Scanner scanner, Printer printer) {
         this.scanner = scanner;
-        this.menuPrinter = menuPrinter;
+        this.printer = printer;
     }
 
     @Override
@@ -24,8 +24,8 @@ public class ConsoleInputReader implements InputReader {
             boolean checkIfFileExists)
             throws FileNotFoundException {
 
-        menuPrinter.printInfo("Hit ENTER for default: " + defaultFileName);
-        menuPrinter.printWithUnderline("Enter " + fileNameDescription + " file name: ");
+        printer.printInfo("Hit ENTER for default: " + defaultFileName);
+        printer.printWithUnderline("Enter " + fileNameDescription + " file name: ");
 
         String inputFileName = scanner.nextLine();
 
@@ -38,7 +38,7 @@ public class ConsoleInputReader implements InputReader {
         if (checkIfFileExists && (!file.exists() || !file.isFile())) {
             throw new FileNotFoundException("Cannot find " + fileNameDescription + " file: " + inputFileName);
         } else {
-            menuPrinter.printInfo(fileNameDescription + " file = " + file.getAbsolutePath());
+            printer.printInfo(fileNameDescription + " file = " + file.getAbsolutePath());
             return inputFileName;
         }
 
@@ -50,8 +50,8 @@ public class ConsoleInputReader implements InputReader {
             int defaultInt)
             throws NumberFormatException {
 
-        menuPrinter.printInfo("Hit ENTER for default: " + defaultInt);
-        menuPrinter.printWithUnderline("Enter " + intDescription + " int: ");
+        printer.printInfo("Hit ENTER for default: " + defaultInt);
+        printer.printWithUnderline("Enter " + intDescription + " int: ");
 
         String input = scanner.nextLine();
         int n;

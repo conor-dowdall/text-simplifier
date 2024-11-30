@@ -2,24 +2,10 @@ package ie.atu.sw.menu;
 
 import java.util.Collection;
 
-public interface MenuPrinter {
+import ie.atu.sw.util.Printer;
 
-    void printTitle(String title);
+public interface MenuPrinter extends Printer {
 
     void printItems(Collection<MenuItem> items);
-
-    void printChoice(String choice);
-
-    void printHeading(String heading);
-
-    void printWithUnderline(String text);
-
-    void printInfo(String info);
-
-    void printWarning(String warning);
-
-    void printError(String error);
-
-    void printSuccess(String success);
 
 }
