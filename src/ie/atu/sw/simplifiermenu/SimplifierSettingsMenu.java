@@ -200,9 +200,8 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
         getWordReplacer()
                 .setWordEmbeddingsMap(
-                        new WordEmbeddingMap(
-                                WordEmbeddingMap
-                                        .getMap(fileName, ", ")));
+                        WordEmbeddingMap
+                                .getMapFromFile(fileName, ", "));
 
         setWordEmbeddingsFileName(fileName);
 
@@ -230,9 +229,8 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
         getWordReplacer()
                 .setReplacementWordsSet(
-                        new ReplacementWordSet(
-                                ReplacementWordSet
-                                        .getSet(fileName, ", ")));
+                        ReplacementWordSet
+                                .getSetFromFile(fileName, ", "));
 
         setReplacementWordsFileName(fileName);
 

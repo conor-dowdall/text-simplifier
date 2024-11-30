@@ -44,7 +44,7 @@ public class WordReplacer {
     }
 
     private WordEmbeddingMap wordEmbeddingMap;
-    private ReplacementWordSet replacementWordSet;
+    private ReplacementWordSetInterface replacementWordSet;
 
     private int similarReplacementWords = 1;
     private SimilarityAlgorithm similarityAlgorithm = SimilarityAlgorithm.COSINE_SIMILARITY;
@@ -171,7 +171,7 @@ public class WordReplacer {
                 similarReplacementWords,
                 similarityAlgorithm.isHigherMoreSimilar());
 
-        for (String replacementWord : replacementWordSet.replacementWordSet()) {
+        for (String replacementWord : replacementWordSet.getReplacementWordSet()) {
             WordEmbedding replacementWordEmbedding = wordEmbeddingMap.getWordEmbedding(replacementWord);
 
             if (replacementWordEmbedding != null) {

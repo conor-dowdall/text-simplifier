@@ -1,37 +1,28 @@
 package ie.atu.sw.wordreplacer;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 
-public record ReplacementWordSet(Set<String> replacementWordSet) {
+import ie.atu.sw.util.FileParser;
 
-    public static HashSet<String> getSet(String fileName, String delimiter)
-            throws IOException {
+public record ReplacementWordSet(Set<String> replacementWordSet) implements ReplacementWordSetInterface {
 
-        HashSet<String> replacementWordSet = new HashSet<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(delimiter);
-                for (int i = 0; i < parts.length; i++) {
-                    replacementWordSet.add(parts[i]);
-                }
-            }
-        }
-
-        return replacementWordSet;
-
+    public static ReplacementWordSet getSetFromFile(String fileName, String delimiter) throws IOException {
+        Set<String> set = FileParser.parseSetFile(fileName, delimiter);
+        return new ReplacementWordSet(set);
     }
 
+    @Override
+    public Set<String> getReplacementWordSet() {
+        return replacementWordSet;
+    }
+
+    @Override
     public int getSize() {
         return replacementWordSet.size();
     }
 
+    @Override
     public boolean containsWord(String word) {
         return replacementWordSet.contains(word);
     }
