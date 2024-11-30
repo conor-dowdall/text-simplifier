@@ -2,14 +2,13 @@ package ie.atu.sw.simplifiermenu;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import ie.atu.sw.console.ConsoleProgressMeter;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.util.ConsoleInputReader;
+import ie.atu.sw.util.InputReader;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
@@ -33,21 +32,21 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     private final ReplacementMethodSettingsMenu replacementMethodMenu;
 
     public SimplifierSettingsMenu(
-            Scanner scanner,
+            InputReader inputReader,
             MenuPrinter menuPrinter,
             Preferences preferences,
             WordReplacer wordReplacer) {
 
-        super(scanner, menuPrinter, preferences, wordReplacer);
+        super(inputReader, menuPrinter, preferences, wordReplacer);
 
         this.similarityAlgorithmMenu = new SimilarityAlgorithmSettingsMenu(
-                scanner,
+                inputReader,
                 menuPrinter,
                 preferences,
                 wordReplacer);
 
         this.replacementMethodMenu = new ReplacementMethodSettingsMenu(
-                scanner,
+                inputReader,
                 menuPrinter,
                 preferences,
                 wordReplacer);
@@ -183,9 +182,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     void loadWordEmbeddingsFile() throws IOException {
         int CROSSOVER_TIME = 99;
 
-        String fileName = ConsoleInputReader.scanFileName(
-                getScanner(),
-                getMenuPrinter(),
+        String fileName = getInputReader().getFileName(
                 "WORD EMBEDDINGS",
                 getWordEmbeddingsFileName(),
                 true);
@@ -211,9 +208,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     void loadReplacementWordsFile() throws IOException {
         int CROSSOVER_TIME = 99;
 
-        String fileName = ConsoleInputReader.scanFileName(
-                getScanner(),
-                getMenuPrinter(),
+        String fileName = getInputReader().getFileName(
                 "REPLACEMENT WORDS",
                 getReplacementWordsFileName(),
                 true);
@@ -238,9 +233,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
     public void scanNumSimilarReplacementWordsToStore() {
 
-        int n = ConsoleInputReader.scanInt(
-                getScanner(),
-                getMenuPrinter(),
+        int n = getInputReader().getInt(
                 "SIMILAR WORDS TO STORE",
                 getNumSimilarReplacementWordsToStore());
 

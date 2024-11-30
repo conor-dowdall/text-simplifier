@@ -2,18 +2,19 @@ package ie.atu.sw.menu;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Scanner;
+
+import ie.atu.sw.util.InputReader;
 
 public abstract class Menu {
 
     private final String title;
-    private final Scanner scanner;
+    private final InputReader inputReader;
     private final MenuPrinter menuPrinter;
     private final LinkedHashMap<String, MenuItem> shortcutMap = new LinkedHashMap<>();
 
-    public Menu(String title, Scanner scanner, MenuPrinter menuPrinter) {
+    public Menu(String title, InputReader inputReader, MenuPrinter menuPrinter) {
         this.title = title;
-        this.scanner = scanner;
+        this.inputReader = inputReader;
         this.menuPrinter = menuPrinter;
 
         createMenuItems();
@@ -27,8 +28,8 @@ public abstract class Menu {
         return menuPrinter;
     }
 
-    protected Scanner getScanner() {
-        return scanner;
+    protected InputReader getInputReader() {
+        return inputReader;
     }
 
     protected void addMenuItem(String shortcut, String label, Runnable runnable) {
@@ -46,7 +47,7 @@ public abstract class Menu {
 
     protected void scanInputOptionAndRunItemRunnable() {
         try {
-            String inputOption = scanner.nextLine();
+            String inputOption = inputReader.getString();
             MenuItem item = shortcutMap.get(inputOption);
 
             if (item != null) {

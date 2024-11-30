@@ -2,11 +2,11 @@ package ie.atu.sw.simplifiermenu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.prefs.Preferences;
 
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
+import ie.atu.sw.util.InputReader;
 import ie.atu.sw.util.SimilarityAlgorithm;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
@@ -16,12 +16,12 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
     private static final String SIMILARITY_ALGORITHM_DEFAULT = SimilarityAlgorithm.COSINE_SIMILARITY.name();
 
     public SimilarityAlgorithmSettingsMenu(
-            Scanner scanner,
+            InputReader inputReader,
             MenuPrinter menuPrinter,
             Preferences preferences,
             WordReplacer wordReplacer) {
 
-        super(scanner, menuPrinter, preferences, wordReplacer);
+        super(inputReader, menuPrinter, preferences, wordReplacer);
 
     }
 

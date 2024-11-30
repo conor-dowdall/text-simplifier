@@ -1,10 +1,10 @@
 package ie.atu.sw.simplifiermenu;
 
-import java.util.Scanner;
 import java.util.prefs.Preferences;
 
 import ie.atu.sw.menu.MenuPrinter;
 import ie.atu.sw.menu.SettingsMenu;
+import ie.atu.sw.util.InputReader;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public abstract class WordReplacerSettingsMenu extends SettingsMenu {
@@ -12,12 +12,12 @@ public abstract class WordReplacerSettingsMenu extends SettingsMenu {
     private final WordReplacer wordReplacer;
 
     public WordReplacerSettingsMenu(
-            Scanner scanner,
+            InputReader inputReader,
             MenuPrinter menuPrinter,
             Preferences preferences,
             WordReplacer wordReplacer) {
 
-        super("Word Replacer Settings", scanner, menuPrinter, preferences);
+        super("Word Replacer Settings", inputReader, menuPrinter, preferences);
 
         this.wordReplacer = wordReplacer;
 

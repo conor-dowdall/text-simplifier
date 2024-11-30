@@ -2,13 +2,12 @@ package ie.atu.sw.simplifiermenu;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 import java.util.prefs.Preferences;
 
 import ie.atu.sw.menu.Menu;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.menu.MenuPrinter;
-import ie.atu.sw.util.ConsoleInputReader;
+import ie.atu.sw.util.InputReader;
 import ie.atu.sw.wordreplacer.WordReplacer;
 
 public class SimplifierMainMenu extends Menu {
@@ -18,15 +17,15 @@ public class SimplifierMainMenu extends Menu {
     private final Preferences preferences = Preferences.userNodeForPackage(SimplifierMainMenu.class);
 
     public SimplifierMainMenu(
-            Scanner scanner,
+            InputReader inputReader,
             MenuPrinter menuPrinter,
             WordReplacer wordReplacer) {
 
-        super("Simplifier", scanner, menuPrinter);
+        super("Simplifier", inputReader, menuPrinter);
 
         this.wordReplacer = wordReplacer;
 
-        settingsMenu = new SimplifierSettingsMenu(scanner, menuPrinter, preferences, wordReplacer);
+        settingsMenu = new SimplifierSettingsMenu(inputReader, menuPrinter, preferences, wordReplacer);
 
     }
 
@@ -110,18 +109,14 @@ public class SimplifierMainMenu extends Menu {
                 settingsMenu.loadReplacementWordsFile();
             }
 
-            String inputTextFileName = ConsoleInputReader.scanFileName(
-                    getScanner(),
-                    getMenuPrinter(),
+            String inputTextFileName = getInputReader().getFileName(
                     "INPUT FILE",
                     settingsMenu.getInputTextFileName(),
                     true);
 
             settingsMenu.setInputTextFileName(inputTextFileName);
 
-            String outputTextFileName = ConsoleInputReader.scanFileName(
-                    getScanner(),
-                    getMenuPrinter(),
+            String outputTextFileName = getInputReader().getFileName(
                     "OUTPUT FILE",
                     settingsMenu.getOutputTextFileName(),
                     false);
@@ -158,7 +153,7 @@ public class SimplifierMainMenu extends Menu {
             getMenuPrinter().printWithUnderline("Enter some text to simplify:");
             System.out.println();
 
-            String text = getScanner().nextLine();
+            String text = getInputReader().getString();
             String simplified = wordReplacer.replaceString(text);
 
             System.out.println();
@@ -176,7 +171,7 @@ public class SimplifierMainMenu extends Menu {
     }
 
     private void quitProgram() {
-        getScanner().close();
+        getInputReader().close();
         getMenuPrinter().printInfo("Quitting");
         System.exit(0);
     }
