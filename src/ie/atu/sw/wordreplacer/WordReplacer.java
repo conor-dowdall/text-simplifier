@@ -43,7 +43,7 @@ public class WordReplacer {
         }
     }
 
-    private WordEmbeddingMap wordEmbeddingMap;
+    private WordEmbeddingMapInterface wordEmbeddingMap;
     private ReplacementWordSetInterface replacementWordSet;
 
     private int similarReplacementWords = 1;
