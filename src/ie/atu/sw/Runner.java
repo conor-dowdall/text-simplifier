@@ -8,6 +8,7 @@ import ie.atu.sw.simplifiermenu.SimplifierMainMenu;
 import ie.atu.sw.util.InputReaderInterface;
 import ie.atu.sw.util.MenuPrinterInterface;
 import ie.atu.sw.wordreplacer.WordReplacer;
+import ie.atu.sw.wordreplacer.WordReplacerAbstract;
 
 public class Runner {
 
@@ -19,7 +20,7 @@ public class Runner {
 
         InputReaderInterface inputReader = new ConsoleInputReader(scanner, menuPrinter);
 
-        WordReplacer wordReplacer = new WordReplacer();
+        WordReplacerAbstract wordReplacer = new WordReplacer();
 
         new SimplifierMainMenu(inputReader, menuPrinter, wordReplacer)
                 .printMenuAndAcceptChoice();

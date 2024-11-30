@@ -8,18 +8,18 @@ import ie.atu.sw.menu.Menu;
 import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.util.InputReaderInterface;
 import ie.atu.sw.util.MenuPrinterInterface;
-import ie.atu.sw.wordreplacer.WordReplacer;
+import ie.atu.sw.wordreplacer.WordReplacerAbstract;
 
 public class SimplifierMainMenu extends Menu {
 
-    private final WordReplacer wordReplacer;
+    private final WordReplacerAbstract wordReplacer;
     private final SimplifierSettingsMenu settingsMenu;
     private final Preferences preferences = Preferences.userNodeForPackage(SimplifierMainMenu.class);
 
     public SimplifierMainMenu(
             InputReaderInterface inputReader,
             MenuPrinterInterface menuPrinter,
-            WordReplacer wordReplacer) {
+            WordReplacerAbstract wordReplacer) {
 
         super("Simplifier", inputReader, menuPrinter);
 

@@ -8,7 +8,7 @@ import ie.atu.sw.menu.MenuItem;
 import ie.atu.sw.util.InputReaderInterface;
 import ie.atu.sw.util.MenuPrinterInterface;
 import ie.atu.sw.wordreplacer.ReplacementMethod;
-import ie.atu.sw.wordreplacer.WordReplacer;
+import ie.atu.sw.wordreplacer.WordReplacerAbstract;
 
 public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
 
@@ -19,7 +19,7 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
             InputReaderInterface inputReader,
             MenuPrinterInterface menuPrinter,
             Preferences preferences,
-            WordReplacer wordReplacer) {
+            WordReplacerAbstract wordReplacer) {
 
         super(inputReader, menuPrinter, preferences, wordReplacer);
 
