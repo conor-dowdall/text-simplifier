@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -36,7 +37,7 @@ public class FileParser {
     }
 
     public static HashMap<String, WordEmbedding> parseMapFile(String fileName, String delimiter)
-            throws IOException {
+            throws IOException, NumberFormatException {
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
@@ -48,7 +49,6 @@ public class FileParser {
                 String[] parts = line.split(delimiter);
                 String word = parts[0];
                 double[] embedding = new double[parts.length - 1];
-
                 for (int i = 1; i < parts.length; i++) {
                     embedding[i - 1] = Double.parseDouble(parts[i]);
                 }
