@@ -10,12 +10,23 @@ import ie.atu.sw.util.InputReaderInterface;
 import ie.atu.sw.util.MenuPrinterInterface;
 import ie.atu.sw.wordreplacer.WordReplacerAbstract;
 
+/**
+ * Main menu for the Simplifier application. Provides options for text
+ * simplification, managing settings, and loading configuration files.
+ */
 public class SimplifierMainMenu extends Menu {
 
     private final WordReplacerAbstract wordReplacer;
     private final SimplifierSettingsMenu settingsMenu;
     private final Preferences preferences = Preferences.userNodeForPackage(SimplifierMainMenu.class);
 
+    /**
+     * Constructs the main menu for the Simplifier application.
+     *
+     * @param inputReader  the input reader for user interactions
+     * @param menuPrinter  the printer for displaying menu and messages
+     * @param wordReplacer the word replacer instance for text simplification
+     */
     public SimplifierMainMenu(
             InputReaderInterface inputReader,
             MenuPrinterInterface menuPrinter,
@@ -29,6 +40,9 @@ public class SimplifierMainMenu extends Menu {
 
     }
 
+    /**
+     * Creates and initializes the menu items for the main menu.
+     */
     @Override
     protected void createMenuItems() {
 
@@ -95,6 +109,9 @@ public class SimplifierMainMenu extends Menu {
 
     }
 
+    /**
+     * Handles the logic for simplifying a text file.
+     */
     private void launchSimplifyTextFile() {
 
         try {
@@ -135,6 +152,9 @@ public class SimplifierMainMenu extends Menu {
         }
     }
 
+    /**
+     * Handles the logic for simplifying an input string of text.
+     */
     private void launchSimplifyText() {
 
         try {
@@ -166,10 +186,16 @@ public class SimplifierMainMenu extends Menu {
         }
     }
 
+    /**
+     * Launches the settings menu.
+     */
     private void launchSettingsMenu() {
         settingsMenu.printMenuAndAcceptChoice();
     }
 
+    /**
+     * Handles the logic for quitting the program.
+     */
     private void quitProgram() {
         getInputReader().close();
         getMenuPrinter().printInfo("Quitting");

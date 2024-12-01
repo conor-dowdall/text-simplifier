@@ -5,10 +5,18 @@ import java.util.Collection;
 import ie.atu.sw.console.ConsoleColor;
 import ie.atu.sw.util.MenuPrinterInterface;
 
+/**
+ * Implementation of MenuPrinterInterface for printing menu-related content to
+ * the console.
+ * Provides methods to print titles, choices, headings, and other messages with
+ * various stylings (e.g., bold, underline).
+ */
 public class ConsoleMenuPrinter implements MenuPrinterInterface {
 
     /**
-     * print a stylized title to the terminal
+     * Prints a stylized title to the terminal.
+     * 
+     * @param title the title to be displayed
      */
     public void printTitle(String title) {
         System.out.print(ConsoleColor.BLACK_BACKGROUND);
@@ -22,7 +30,9 @@ public class ConsoleMenuPrinter implements MenuPrinterInterface {
     }
 
     /**
-     * print a stylized item list to the terminal
+     * Prints a stylized list of menu items to the terminal.
+     * 
+     * @param items the collection of menu items to be displayed
      */
     public void printItems(Collection<MenuItem> items) {
         System.out.print(ConsoleColor.BLACK_BACKGROUND);
@@ -40,9 +50,9 @@ public class ConsoleMenuPrinter implements MenuPrinterInterface {
     }
 
     /**
-     * print stylized choice-information-text to the terminal
+     * Prints a stylized choice message to the terminal.
      * 
-     * @param choice - a string to be stylized as information-text
+     * @param choice the choice information to be displayed
      */
     public void printChoice(String choice) {
         System.out.println();
@@ -54,9 +64,9 @@ public class ConsoleMenuPrinter implements MenuPrinterInterface {
     }
 
     /**
-     * print a stylized heading to the terminal
+     * Prints a stylized heading to the terminal.
      * 
-     * @param heading - a string to be stylized as a heading
+     * @param heading the heading to be displayed
      */
     public void printHeading(String heading) {
         System.out.println();
@@ -65,9 +75,9 @@ public class ConsoleMenuPrinter implements MenuPrinterInterface {
     }
 
     /**
-     * print an underlined string to the terminal
+     * Prints a string with underlined style to the terminal.
      * 
-     * @param text - a string to be underlined
+     * @param text the text to be underlined
      */
     public void printWithUnderline(String text) {
         System.out.print(ConsoleColor.BLACK_BACKGROUND);
@@ -77,9 +87,9 @@ public class ConsoleMenuPrinter implements MenuPrinterInterface {
     }
 
     /**
-     * print stylized information-text to the terminal
+     * Prints a stylized information message to the terminal.
      * 
-     * @param info - a string to be stylized as information-text
+     * @param info the information text to be displayed
      */
     public void printInfo(String info) {
         System.out.println();
@@ -91,9 +101,9 @@ public class ConsoleMenuPrinter implements MenuPrinterInterface {
     }
 
     /**
-     * print stylized warning-text to the terminal
+     * Prints a stylized warning message to the terminal.
      * 
-     * @param warning - a string to be stylized as warning-text
+     * @param warning the warning text to be displayed
      */
     public void printWarning(String warning) {
         System.out.println();
@@ -105,9 +115,9 @@ public class ConsoleMenuPrinter implements MenuPrinterInterface {
     }
 
     /**
-     * print stylized error-text to the terminal
+     * Prints a stylized error message to the terminal.
      * 
-     * @param error - a string to be stylized as error-text
+     * @param error the error text to be displayed
      */
     public void printError(String error) {
         System.err.println();
@@ -119,9 +129,9 @@ public class ConsoleMenuPrinter implements MenuPrinterInterface {
     }
 
     /**
-     * print stylized success-text to the terminal
+     * Prints a stylized success message to the terminal.
      * 
-     * @param success - a string to be stylized as success-text
+     * @param success the success text to be displayed
      */
     public void printSuccess(String success) {
         System.err.println();

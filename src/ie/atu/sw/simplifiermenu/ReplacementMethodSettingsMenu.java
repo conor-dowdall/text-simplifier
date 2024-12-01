@@ -10,11 +10,22 @@ import ie.atu.sw.util.MenuPrinterInterface;
 import ie.atu.sw.wordreplacer.ReplacementMethod;
 import ie.atu.sw.wordreplacer.WordReplacerAbstract;
 
+/**
+ * Menu for configuring the replacement method in the WordReplacer.
+ */
 public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
 
     private static final String REPLACEMENT_METHOD_KEY = "replacementMethodToUse";
     private static final String REPLACEMENT_METHOD_DEFAULT = ReplacementMethod.MOST_SIMILAR.name();
 
+    /**
+     * Constructor to initialize the ReplacementMethodSettingsMenu.
+     *
+     * @param inputReader  the input reader interface for user input.
+     * @param menuPrinter  the menu printer interface for output.
+     * @param preferences  the preferences object for storing settings.
+     * @param wordReplacer the WordReplacerAbstract instance to configure.
+     */
     public ReplacementMethodSettingsMenu(
             InputReaderInterface inputReader,
             MenuPrinterInterface menuPrinter,
@@ -55,6 +66,11 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
         getWordReplacer().setReplacementMethod(getReplacementMethodToUse());
     }
 
+    /**
+     * Retrieves the replacement method to use from preferences.
+     *
+     * @return the ReplacementMethod to use.
+     */
     public ReplacementMethod getReplacementMethodToUse() {
         String replacementMethodToUse = getPreferences().get(
                 REPLACEMENT_METHOD_KEY,
@@ -63,6 +79,11 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
         return ReplacementMethod.valueOf(replacementMethodToUse);
     }
 
+    /**
+     * Sets the replacement method to use and updates preferences.
+     *
+     * @param replacementMethod the ReplacementMethod to set.
+     */
     public void setReplacementMethodToUse(ReplacementMethod replacementMethod) {
         getWordReplacer().setReplacementMethod(replacementMethod);
         getPreferences().put(REPLACEMENT_METHOD_KEY, replacementMethod.name());

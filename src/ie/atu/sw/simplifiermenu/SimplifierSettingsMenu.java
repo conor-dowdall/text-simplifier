@@ -13,8 +13,15 @@ import ie.atu.sw.wordembedding.WordEmbeddingMap;
 import ie.atu.sw.wordreplacer.ReplacementWordSet;
 import ie.atu.sw.wordreplacer.WordReplacerAbstract;
 
+/**
+ * Represents the settings menu for the simplifier application, extending the
+ * functionality of {@link WordReplacerSettingsMenu}. Provides configuration
+ * options for managing preferences related to word embeddings, replacement
+ * words, similarity algorithms, and replacement methods.
+ */
 public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
+    // Constants defining preference keys and default values
     private static final String WORD_EMBEDDINGS_FILE_NAME_KEY = "wordEmbeddingsFileName";
     private static final String WORD_EMBEDDINGS_FILE_NAME_DEFAULT = "../word-embeddings.txt";
 
@@ -36,9 +43,26 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     private static final String NUM_SIMILAR_WORDS_KEY = "numSimilarReplacementWordsToStore";
     private static final int NUM_SIMILAR_WORDS_DEFAULT = 1;
 
+    // Instance variables
+    /**
+     * Settings menu for managing similarity algorithm configurations.
+     */
     private final SimilarityAlgorithmSettingsMenu similarityAlgorithmMenu;
+
+    /**
+     * Settings menu for managing replacement method configurations.
+     */
     private final ReplacementMethodSettingsMenu replacementMethodMenu;
 
+    /**
+     * Constructs a new instance of the simplifier settings menu.
+     *
+     * @param inputReader  the input reader for capturing user input.
+     * @param menuPrinter  the printer for displaying menu options and messages.
+     * @param preferences  the preferences storage for saving and retrieving
+     *                     settings.
+     * @param wordReplacer the word replacer instance to configure.
+     */
     public SimplifierSettingsMenu(
             InputReaderInterface inputReader,
             MenuPrinterInterface menuPrinter,
@@ -61,12 +85,19 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
     }
 
+    /**
+     * Initializes the word replacer instance with the number of similar replacement
+     * words to store.
+     */
     @Override
     protected void initWordReplacer() {
         getWordReplacer()
                 .setSimilarReplacementWords(getNumSimilarReplacementWordsToStore());
     }
 
+    /**
+     * Creates and registers the menu items for this settings menu.
+     */
     @Override
     protected void createMenuItems() {
 
@@ -177,62 +208,144 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
     }
 
+    /**
+     * Retrieves the current word embeddings file name from the preferences.
+     *
+     * @return the word embeddings file name, or the default value if not set.
+     */
     private String getWordEmbeddingsFileName() {
         return getPreferences().get(WORD_EMBEDDINGS_FILE_NAME_KEY, WORD_EMBEDDINGS_FILE_NAME_DEFAULT);
     }
 
+    /**
+     * Updates the word embeddings file name in the preferences.
+     *
+     * @param fileName the new word embeddings file name to set.
+     */
     private void setWordEmbeddingsFileName(String fileName) {
         getPreferences().put(WORD_EMBEDDINGS_FILE_NAME_KEY, fileName);
     }
 
+    /**
+     * Retrieves the current delimiter for the word embeddings file from the
+     * preferences.
+     *
+     * @return the word embeddings file delimiter, or the default value if not set.
+     */
     private String getWordEmbeddingsFileDelimiter() {
         return getPreferences().get(WORD_EMBEDDINGS_FILE_DELIMITER_KEY, WORD_EMBEDDINGS_FILE_DELIMITER_DEFAULT);
     }
 
+    /**
+     * Updates the delimiter for the word embeddings file in the preferences.
+     *
+     * @param delimiter the new delimiter for the word embeddings file to set.
+     */
     private void setWordEmbeddingsFileDelimiter(String delimiter) {
         getPreferences().put(WORD_EMBEDDINGS_FILE_DELIMITER_KEY, delimiter);
     }
 
+    /**
+     * Updates the delimiter for the word embeddings file in the preferences.
+     *
+     * @param delimiter the new delimiter for the word embeddings file to set.
+     */
     private String getReplacementWordsFileName() {
         return getPreferences().get(REPLACEMENT_WORDS_FILE_NAME_KEY, REPLACEMENT_WORDS_FILE_NAME_DEFAULT);
     }
 
+    /**
+     * Updates the replacement words file name in the preferences.
+     *
+     * @param fileName the new replacement words file name to set.
+     */
     private void setReplacementWordsFileName(String fileName) {
         getPreferences().put(REPLACEMENT_WORDS_FILE_NAME_KEY, fileName);
     }
 
+    /**
+     * Retrieves the current delimiter for the replacement words file from the
+     * preferences.
+     *
+     * @return the replacement words file delimiter, or the default value if not
+     *         set.
+     */
     private String getReplacementWordsFileDelimiter() {
         return getPreferences().get(REPLACEMENT_WORDS_FILE_DELIMITER_KEY, REPLACEMENT_WORDS_FILE_DELIMITER_DEFAULT);
     }
 
+    /**
+     * Updates the delimiter for the replacement words file in the preferences.
+     *
+     * @param delimiter the new delimiter for the replacement words file to set.
+     */
     private void setReplacementWordsFileDelimiter(String delimiter) {
         getPreferences().put(REPLACEMENT_WORDS_FILE_DELIMITER_KEY, delimiter);
     }
 
+    /**
+     * Retrieves the current input text file name from the preferences.
+     *
+     * @return the input text file name, or the default value if not set.
+     */
     String getInputTextFileName() {
         return getPreferences().get(INPUT_TEXT_FILE_NAME_KEY, INPUT_TEXT_FILE_NAME_DEFAULT);
     }
 
+    /**
+     * Updates the input text file name in the preferences.
+     *
+     * @param fileName the new input text file name to set.
+     */
     void setInputTextFileName(String fileName) {
         getPreferences().put(INPUT_TEXT_FILE_NAME_KEY, fileName);
     }
 
+    /**
+     * Retrieves the current output text file name from the preferences.
+     *
+     * @return the output text file name, or the default value if not set.
+     */
     String getOutputTextFileName() {
         return getPreferences().get(OUTPUT_TEXT_FILE_NAME_KEY, OUTPUT_TEXT_FILE_NAME_DEFAULT);
     }
 
+    /**
+     * Updates the output text file name in the preferences.
+     *
+     * @param fileName the new output text file name to set.
+     */
     void setOutputTextFileName(String fileName) {
         getPreferences().put(OUTPUT_TEXT_FILE_NAME_KEY, fileName);
     }
 
+    /**
+     * Retrieves the current number of similar replacement words to store from the
+     * preferences.
+     *
+     * @return the number of similar replacement words, or the default value if not
+     *         set.
+     */
     private int getNumSimilarReplacementWordsToStore() {
         return getPreferences().getInt(NUM_SIMILAR_WORDS_KEY, NUM_SIMILAR_WORDS_DEFAULT);
     }
 
+    /**
+     * Updates the number of similar replacement words to store in the preferences.
+     *
+     * @param n the new number of similar replacement words to set.
+     */
     private void setNumSimilarReplacementWordsToStore(int n) {
         getPreferences().putInt(NUM_SIMILAR_WORDS_KEY, n);
     }
 
+    /**
+     * Handles loading of the word embeddings file, updating preferences, and
+     * setting the word replacer's map.
+     *
+     * @throws IOException           if an I/O error occurs while reading the file.
+     * @throws NumberFormatException if the file format is invalid.
+     */
     void loadWordEmbeddingsFile() throws IOException, NumberFormatException {
         try {
             int CROSSOVER_TIME = 99;
@@ -269,6 +382,12 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         }
     }
 
+    /**
+     * Handles loading of the replacement words file, updating preferences, and
+     * setting the word replacer's set.
+     *
+     * @throws IOException if an I/O error occurs while reading the file.
+     */
     void loadReplacementWordsFile() throws IOException {
         int CROSSOVER_TIME = 99;
 
@@ -300,6 +419,10 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         }
     }
 
+    /**
+     * Updates the number of similar replacement words to store and reflects the
+     * change in the preferences and UI.
+     */
     public void scanNumSimilarReplacementWordsToStore() {
 
         int n = getInputReader().getInt(
@@ -314,6 +437,9 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
     }
 
+    /**
+     * Prints the current preferences to the menu printer.
+     */
     @Override
     public void printPreferences() {
         try {
@@ -351,7 +477,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     }
 
     /**
-     * reset all settings to their defaults by clearing the preferences
+     * Resets all preferences to their default values.
      */
     @Override
     public void resetPreferences() {
@@ -376,6 +502,9 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         }
     }
 
+    /**
+     * Closes the settings menu and prints a closing message.
+     */
     private void closeSettings() {
         getMenuPrinter().printInfo("Closing Settings");
     }
