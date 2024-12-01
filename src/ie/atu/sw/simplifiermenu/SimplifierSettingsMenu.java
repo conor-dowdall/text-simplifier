@@ -234,32 +234,38 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     }
 
     void loadWordEmbeddingsFile() throws IOException, NumberFormatException {
-        int CROSSOVER_TIME = 99;
+        try {
+            int CROSSOVER_TIME = 99;
 
-        getMenuPrinter().printInfo("\"Word Embeddings Delimiter\" = \"" + getWordEmbeddingsFileDelimiter() + "\"");
+            getMenuPrinter().printInfo("\"Word Embeddings Delimiter\" = \"" + getWordEmbeddingsFileDelimiter() + "\"");
 
-        String fileName = getInputReader().getFileName(
-                "WORD EMBEDDINGS",
-                getWordEmbeddingsFileName(),
-                true);
+            String fileName = getInputReader().getFileName(
+                    "WORD EMBEDDINGS",
+                    getWordEmbeddingsFileName(),
+                    true);
 
-        for (int i = 0; i <= CROSSOVER_TIME; i++) {
-            ConsoleProgressMeter.printProgress(i, 100);
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                System.err.println("Sleep interrupted: " + e.getMessage());
+            for (int i = 0; i <= CROSSOVER_TIME; i++) {
+                ConsoleProgressMeter.printProgress(i, 100);
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    System.err.println("Sleep interrupted: " + e.getMessage());
+                }
             }
-        }
-        getWordReplacer()
-                .setWordEmbeddingsMap(
-                        WordEmbeddingMap
-                                .getMapFromFile(fileName, getWordEmbeddingsFileDelimiter()));
+            getWordReplacer()
+                    .setWordEmbeddingsMap(
+                            WordEmbeddingMap
+                                    .getMapFromFile(fileName, getWordEmbeddingsFileDelimiter()));
 
-        setWordEmbeddingsFileName(fileName);
+            setWordEmbeddingsFileName(fileName);
 
-        for (int i = CROSSOVER_TIME; i <= 100; i++) {
-            ConsoleProgressMeter.printProgress(i, 100);
+            for (int i = CROSSOVER_TIME; i <= 100; i++) {
+                ConsoleProgressMeter.printProgress(i, 100);
+            }
+
+        } catch (NumberFormatException e) {
+            getMenuPrinter()
+                    .printError("Something is wrong in the word-embeddings file. Suggestion: Check delimiter setting.");
         }
     }
 
