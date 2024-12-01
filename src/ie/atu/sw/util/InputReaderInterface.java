@@ -12,6 +12,10 @@ public interface InputReaderInterface {
 
         String getString();
 
+        String getString(
+                        String stringDescription,
+                        String defaultString);
+
         int getInt(
                         String intDescription,
                         int defaultInt)

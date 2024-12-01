@@ -10,7 +10,8 @@ import ie.atu.sw.util.WordEmbeddingMapInterface;
 
 public record WordEmbeddingMap(Map<String, WordEmbedding> wordEmbeddingMap) implements WordEmbeddingMapInterface {
 
-    public static WordEmbeddingMap getMapFromFile(String fileName, String delimiter) throws IOException {
+    public static WordEmbeddingMap getMapFromFile(String fileName, String delimiter)
+            throws IOException, NumberFormatException {
         Map<String, WordEmbedding> map = FileParser.parseMapFile(fileName, delimiter);
         return new WordEmbeddingMap(map);
     }

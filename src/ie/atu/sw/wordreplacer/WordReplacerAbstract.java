@@ -113,7 +113,7 @@ public abstract class WordReplacerAbstract {
         return false;
     }
 
-    public void setWordEmbeddingsMap(WordEmbeddingMapInterface wordEmbeddingMap) {
+    public void setWordEmbeddingsMap(WordEmbeddingMapInterface wordEmbeddingMap) throws IllegalArgumentException {
         this.wordEmbeddingMap = wordEmbeddingMap;
     }
 

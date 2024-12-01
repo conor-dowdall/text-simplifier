@@ -70,6 +70,24 @@ public class ConsoleInputReader implements InputReaderInterface {
     }
 
     @Override
+    public String getString(
+            String stringDescription,
+            String defaultString) {
+
+        printer.printInfo("Hit ENTER for default: " + defaultString);
+        printer.printWithUnderline("Enter " + stringDescription + ": ");
+
+        String inputString = scanner.nextLine();
+
+        if (inputString.isEmpty()) {
+            inputString = defaultString;
+        }
+
+        return inputString;
+
+    }
+
+    @Override
     public void close() {
         scanner.close();
     }

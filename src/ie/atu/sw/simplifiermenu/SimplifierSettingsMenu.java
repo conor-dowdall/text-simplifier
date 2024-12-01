@@ -18,8 +18,14 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
     private static final String WORD_EMBEDDINGS_FILE_NAME_KEY = "wordEmbeddingsFileName";
     private static final String WORD_EMBEDDINGS_FILE_NAME_DEFAULT = "../word-embeddings.txt";
 
+    private static final String WORD_EMBEDDINGS_FILE_DELIMITER_KEY = "wordEmbeddingsFileDelimiter";
+    private static final String WORD_EMBEDDINGS_FILE_DELIMITER_DEFAULT = ", ";
+
     private static final String REPLACEMENT_WORDS_FILE_NAME_KEY = "replacementWordsFileName";
     private static final String REPLACEMENT_WORDS_FILE_NAME_DEFAULT = "../google-1000.txt";
+
+    private static final String REPLACEMENT_WORDS_FILE_DELIMITER_KEY = "replacementWordsFileDelimiter";
+    private static final String REPLACEMENT_WORDS_FILE_DELIMITER_DEFAULT = ", ";
 
     private static final String INPUT_TEXT_FILE_NAME_KEY = "inputTextFileName";
     private static final String INPUT_TEXT_FILE_NAME_DEFAULT = "../input.txt";
@@ -72,7 +78,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                         () -> {
                             try {
                                 loadWordEmbeddingsFile();
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 getMenuPrinter().printError(e.getMessage());
                             } finally {
                                 printMenuAndAcceptChoice();
@@ -85,7 +91,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                         () -> {
                             try {
                                 loadReplacementWordsFile();
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 getMenuPrinter().printError(e.getMessage());
                             } finally {
                                 printMenuAndAcceptChoice();
@@ -113,6 +119,36 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                         "Set String Replacement Method to Use",
                         () -> {
                             replacementMethodMenu.printMenuAndAcceptChoice();
+                            printMenuAndAcceptChoice();
+                        }),
+
+                new MenuItem(
+                        "6",
+                        "Set Word-Embeddings File Delimiter",
+                        () -> {
+                            setWordEmbeddingsFileDelimiter(
+                                    getInputReader()
+                                            .getString(
+                                                    "Word Embeddings File DELIMITER",
+                                                    getWordEmbeddingsFileDelimiter()));
+                            getMenuPrinter()
+                                    .printInfo(
+                                            "Word Embeddings File DELIMITER = " + getWordEmbeddingsFileDelimiter());
+                            printMenuAndAcceptChoice();
+                        }),
+
+                new MenuItem(
+                        "7",
+                        "Set Replacement-Words File Delimiter",
+                        () -> {
+                            setReplacementWordsFileDelimiter(
+                                    getInputReader()
+                                            .getString(
+                                                    "Replacement Words File DELIMITER",
+                                                    getReplacementWordsFileDelimiter()));
+                            getMenuPrinter()
+                                    .printInfo(
+                                            "Replacement Words File DELIMITER = " + getReplacementWordsFileDelimiter());
                             printMenuAndAcceptChoice();
                         }),
 
@@ -149,12 +185,28 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         getPreferences().put(WORD_EMBEDDINGS_FILE_NAME_KEY, fileName);
     }
 
+    private String getWordEmbeddingsFileDelimiter() {
+        return getPreferences().get(WORD_EMBEDDINGS_FILE_DELIMITER_KEY, WORD_EMBEDDINGS_FILE_DELIMITER_DEFAULT);
+    }
+
+    private void setWordEmbeddingsFileDelimiter(String delimiter) {
+        getPreferences().put(WORD_EMBEDDINGS_FILE_DELIMITER_KEY, delimiter);
+    }
+
     private String getReplacementWordsFileName() {
         return getPreferences().get(REPLACEMENT_WORDS_FILE_NAME_KEY, REPLACEMENT_WORDS_FILE_NAME_DEFAULT);
     }
 
     private void setReplacementWordsFileName(String fileName) {
         getPreferences().put(REPLACEMENT_WORDS_FILE_NAME_KEY, fileName);
+    }
+
+    private String getReplacementWordsFileDelimiter() {
+        return getPreferences().get(REPLACEMENT_WORDS_FILE_DELIMITER_KEY, REPLACEMENT_WORDS_FILE_DELIMITER_DEFAULT);
+    }
+
+    private void setReplacementWordsFileDelimiter(String delimiter) {
+        getPreferences().put(REPLACEMENT_WORDS_FILE_DELIMITER_KEY, delimiter);
     }
 
     String getInputTextFileName() {
@@ -181,8 +233,10 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         getPreferences().putInt(NUM_SIMILAR_WORDS_KEY, n);
     }
 
-    void loadWordEmbeddingsFile() throws IOException {
+    void loadWordEmbeddingsFile() throws IOException, NumberFormatException {
         int CROSSOVER_TIME = 99;
+
+        getMenuPrinter().printInfo("\"Word Embeddings Delimiter\" = \"" + getWordEmbeddingsFileDelimiter() + "\"");
 
         String fileName = getInputReader().getFileName(
                 "WORD EMBEDDINGS",
@@ -197,11 +251,10 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
                 System.err.println("Sleep interrupted: " + e.getMessage());
             }
         }
-
         getWordReplacer()
                 .setWordEmbeddingsMap(
                         WordEmbeddingMap
-                                .getMapFromFile(fileName, ", "));
+                                .getMapFromFile(fileName, getWordEmbeddingsFileDelimiter()));
 
         setWordEmbeddingsFileName(fileName);
 
@@ -212,6 +265,8 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
 
     void loadReplacementWordsFile() throws IOException {
         int CROSSOVER_TIME = 99;
+
+        getMenuPrinter().printInfo("\"Replacement Words Delimiter\" = \"" + getReplacementWordsFileDelimiter() + "\"");
 
         String fileName = getInputReader().getFileName(
                 "REPLACEMENT WORDS",
@@ -230,7 +285,7 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
         getWordReplacer()
                 .setReplacementWordsSet(
                         ReplacementWordSet
-                                .getSetFromFile(fileName, ", "));
+                                .getSetFromFile(fileName, getReplacementWordsFileDelimiter()));
 
         setReplacementWordsFileName(fileName);
 
@@ -262,8 +317,14 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
             getMenuPrinter().printInfo("Word Embeddings File Name: \t"
                     + getWordEmbeddingsFileName());
 
+            getMenuPrinter().printInfo("\"Word Embeddings Delimiter\": \t\""
+                    + getWordEmbeddingsFileDelimiter() + "\"");
+
             getMenuPrinter().printInfo("Replacement Words File Name: \t"
                     + getReplacementWordsFileName());
+
+            getMenuPrinter().printInfo("\"Replacement Words Delimiter\": \t\""
+                    + getReplacementWordsFileDelimiter() + "\"");
 
             getMenuPrinter().printInfo("Input Text File Name: \t\t"
                     + getInputTextFileName());
