@@ -12,6 +12,14 @@ import java.util.regex.Pattern;
 public class WordReplacer extends WordReplacerAbstract {
 
     /**
+     * Constructs a new {@link WordReplacer}.
+     * This constructor is used to initialize the word replacer object.
+     */
+    public WordReplacer() {
+        // Default constructor
+    }
+
+    /**
      * Extracts the word and its associated punctuation from a string.
      * The word is matched using the pattern (\\w+) and punctuation is captured
      * using the pattern (\\p{Punct}*). Additionally, the method checks if the word

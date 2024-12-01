@@ -9,8 +9,7 @@ import ie.atu.sw.util.MenuPrinterInterface;
 /**
  * Abstract class that represents a menu in an application.
  * This class is responsible for displaying the menu options, accepting user
- * input,
- * and executing the associated actions for selected options.
+ * input, and executing the associated actions for selected options.
  * It supports a shortcut-based system for selecting menu items.
  */
 public abstract class Menu {

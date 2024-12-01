@@ -8,7 +8,9 @@ import ie.atu.sw.util.ReplacementWordSetInterface;
 
 /**
  * A record representing a set of replacement words, implementing the
- * ReplacementWordSetInterface.
+ * {@link ReplacementWordSetInterface}.
+ * 
+ * @param replacementWordSet the {@link Set} of words.
  */
 public record ReplacementWordSet(Set<String> replacementWordSet) implements ReplacementWordSetInterface {
 

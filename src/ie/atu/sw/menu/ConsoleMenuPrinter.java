@@ -14,6 +14,14 @@ import ie.atu.sw.util.MenuPrinterInterface;
 public class ConsoleMenuPrinter implements MenuPrinterInterface {
 
     /**
+     * Constructs a new {@link ConsoleMenuPrinter}.
+     * This constructor is used to initialize the printer object.
+     */
+    public ConsoleMenuPrinter() {
+        // Default constructor
+    }
+
+    /**
      * Prints a stylized title to the terminal.
      * 
      * @param title the title to be displayed

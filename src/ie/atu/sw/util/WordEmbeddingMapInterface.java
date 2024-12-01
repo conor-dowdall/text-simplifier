@@ -43,6 +43,13 @@ public interface WordEmbeddingMapInterface {
      */
     Collection<WordEmbedding> getEmbeddings();
 
+    /**
+     * Retrieves the word embedding for a specific word.
+     *
+     * @param word the word for which the embedding is to be retrieved
+     * @return the {@link WordEmbedding} object associated with the given word,
+     *         or null if the word is not found
+     */
     WordEmbedding getWordEmbedding(String word);
 
 }

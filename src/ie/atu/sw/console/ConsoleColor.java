@@ -1,13 +1,29 @@
 package ie.atu.sw.console;
 
-/*
- * ANSI escape sequences are a standard for controlling cursor location, color, 
- * font styling, and other options on DOS, Mac and Linux terminals. The ANSI escape 
- * codes are formatted as follows:
+/**
+ * This enum defines various ANSI escape sequences for controlling text
+ * formatting in terminals, such as text color, background color, bold,
+ * underline, and high-intensity variations. ANSI escape codes are used in DOS,
+ * Mac, and Linux terminals to modify the appearance of the text.
  * 
- *  	[<PREFIX>];[<COLOR>];[<TEXT DECORATION>]
- *  
- *  See https://en.wikipedia.org/wiki/ANSI_escape_code for a decent description.
+ * <p>
+ * Each constant represents a specific color or styling option. The color codes
+ * and corresponding descriptions follow the ANSI escape code format, where the
+ * prefix is `\033[`, the color or styling code is the middle part, and the
+ * suffix is `m`. The constants provide a convenient way to style text output in
+ * the terminal.
+ * </p>
+ * 
+ * <p>
+ * Example usage:
+ * </p>
+ * 
+ * <pre>
+ * System.out.println(ConsoleColor.RED + "This text is red!" + ConsoleColor.RESET);
+ * </pre>
+ * 
+ * @see <a href="https://en.wikipedia.org/wiki/ANSI_escape_code">ANSI Escape
+ *      Code Wikipedia</a>
  */
 public enum ConsoleColor {
 
@@ -84,26 +100,52 @@ public enum ConsoleColor {
     CYAN_BACKGROUND_BRIGHT("Cyan [High Intensity BG]", "0;106"),
     WHITE_BACKGROUND_BRIGHT("White [High Intensity BG]", "0;107");
 
-    // Control Sequence Introducer. ASCII Octal = \033, ASCII Hex = \0x1B, Shell =
-    // \e
+    /**
+     * The escape sequence control string that starts the ANSI code.
+     * ASCII Octal = \033, ASCII Hex = \0x1B, Shell = \e
+     */
     private static final String CTRL_SEQ_INTRO = "\033[";
-    private static final String CTRL_SEQ_END = "m"; // Terminates control
+    /**
+     * The escape sequence control string that ends the ANSI code.
+     */
+    private static final String CTRL_SEQ_END = "m";
     private final String description;
     private final String color;
 
+    /**
+     * Constructs a new ConsoleColor with the specified description and color code.
+     *
+     * @param description The description of the color or style.
+     * @param color       The ANSI color code corresponding to this color/style.
+     */
     ConsoleColor(String description, String color) {
         this.description = description;
         this.color = color;
     }
 
+    /**
+     * Gets the description of this color/style.
+     *
+     * @return A description of the color/style.
+     */
     public String description() {
         return this.description;
     }
 
+    /**
+     * Gets the color string in ANSI escape code format.
+     *
+     * @return The ANSI escape code for the color/style.
+     */
     public String color() {
         return toString();
     }
 
+    /**
+     * Returns the full ANSI escape sequence for this color/style.
+     * 
+     * @return The ANSI escape sequence string for the color/style.
+     */
     @Override
     public String toString() {
         return CTRL_SEQ_INTRO + this.color + CTRL_SEQ_END;
