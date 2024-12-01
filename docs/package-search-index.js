@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ie.atu.sw"},{"l":"ie.atu.sw.console"},{"l":"ie.atu.sw.menu"},{"l":"ie.atu.sw.simplifiermenu"},{"l":"ie.atu.sw.util"},{"l":"ie.atu.sw.wordembedding"},{"l":"ie.atu.sw.wordreplacer"}];updateSearchResults();
