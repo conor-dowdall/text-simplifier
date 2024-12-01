@@ -6,14 +6,41 @@ import java.util.Set;
 
 import ie.atu.sw.wordembedding.WordEmbedding;
 
+/**
+ * Interface defining the structure and operations for managing a map of word
+ * embeddings.
+ * Provides methods to retrieve word embeddings, their associated words, and
+ * general information about the collection.
+ */
 public interface WordEmbeddingMapInterface {
 
+    /**
+     * Retrieves the complete map of words and their associated embeddings.
+     *
+     * @return a map where the key is a word (String) and the value is its
+     *         corresponding {@link WordEmbedding}
+     */
     Map<String, WordEmbedding> getWordEmbeddingMap();
 
+    /**
+     * Gets the total number of word embeddings in the map.
+     *
+     * @return the size of the word embedding map
+     */
     int getSize();
 
+    /**
+     * Retrieves the set of words that have embeddings in the map.
+     *
+     * @return a set of words (keys) in the word embedding map
+     */
     Set<String> getWords();
 
+    /**
+     * Retrieves all word embeddings in the map as a collection.
+     *
+     * @return a collection of {@link WordEmbedding} objects in the map
+     */
     Collection<WordEmbedding> getEmbeddings();
 
     WordEmbedding getWordEmbedding(String word);

@@ -9,12 +9,33 @@ import java.util.HashSet;
 
 import ie.atu.sw.wordembedding.WordEmbedding;
 
+/**
+ * Utility class for parsing files into collections and mappings.
+ * Provides methods for parsing files into a {@link HashSet} of strings or a
+ * {@link HashMap} mapping strings to {@link WordEmbedding} objects.
+ * <p>
+ * This class cannot be instantiated.
+ * </p>
+ */
 public class FileParser {
 
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
     private FileParser() {
         // Prevent instantiation
     }
 
+    /**
+     * Parses a file into a {@link HashSet} of strings.
+     * Each line in the file is split by the specified delimiter, and all resulting
+     * parts are added to the set.
+     *
+     * @param fileName  the name of the file to parse
+     * @param delimiter the delimiter used to split each line
+     * @return a {@link HashSet} containing all unique parts from the file
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public static HashSet<String> parseSetFile(String fileName, String delimiter)
             throws IOException {
 
@@ -35,6 +56,20 @@ public class FileParser {
 
     }
 
+    /**
+     * Parses a file into a {@link HashMap} mapping strings to {@link WordEmbedding}
+     * objects.
+     * The first part of each line is treated as the key (a word), and the remaining
+     * parts are parsed as numerical values to create a {@link WordEmbedding}.
+     *
+     * @param fileName  the name of the file to parse
+     * @param delimiter the delimiter used to split each line
+     * @return a {@link HashMap} mapping words to their corresponding
+     *         {@link WordEmbedding} objects
+     * @throws IOException           if an I/O error occurs while reading the file
+     * @throws NumberFormatException if a non-numeric value is encountered in the
+     *                               embedding data
+     */
     public static HashMap<String, WordEmbedding> parseMapFile(String fileName, String delimiter)
             throws IOException, NumberFormatException {
 

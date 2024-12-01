@@ -3,8 +3,24 @@ package ie.atu.sw.wordreplacer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A class responsible for replacing words in a string based on a replacement
+ * set. It extends the abstract class {@link WordReplacerAbstract} and
+ * implements the logic for replacing words while preserving capitalization and
+ * punctuation.
+ */
 public class WordReplacer extends WordReplacerAbstract {
 
+    /**
+     * Extracts the word and its associated punctuation from a string.
+     * The word is matched using the pattern (\\w+) and punctuation is captured
+     * using the pattern (\\p{Punct}*). Additionally, the method checks if the word
+     * is capitalized.
+     * 
+     * @param string the input string (a word, possibly with punctuation)
+     * @return an Object array containing the word, punctuation, and a boolean
+     *         indicating if the word is capitalized
+     */
     private Object[] extractWordObject(String string) {
         // Group 1 (\\w+): Captures one or more word characters.
         // Group 2 (\\p{Punct}*): Captures zero or more punctuation characters.
@@ -23,6 +39,14 @@ public class WordReplacer extends WordReplacerAbstract {
         }
     }
 
+    /**
+     * Replaces words in a given string with their corresponding replacements,
+     * while preserving capitalization and punctuation.
+     * 
+     * @param string the input string to be processed
+     * @return the string with words replaced, maintaining capitalization and
+     *         punctuation
+     */
     @Override
     public String replaceString(String string) {
 

@@ -1,17 +1,26 @@
 package ie.atu.sw.util;
 
 /**
- * utility class with static methods for vector operations like add, subtract,
- * dot product
+ * Utility class providing static methods for various vector operations such as
+ * addition, subtraction, dot product, Euclidean distance, and cosine
+ * similarity.
+ * This class is not meant to be instantiated.
  */
 public class Vector {
 
     /**
-     * add two vectors
-     * 
-     * @param vector1
-     * @param vector2
-     * @return the result of the vector operation
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private Vector() {
+        // Prevent instantiation
+    }
+
+    /**
+     * Adds two vectors element-wise.
+     *
+     * @param vector1 the first vector
+     * @param vector2 the second vector
+     * @return a new vector representing the element-wise sum of the input vectors
      */
     public static double[] add(double[] vector1, double[] vector2) {
         double[] result = new double[vector1.length];
@@ -23,11 +32,12 @@ public class Vector {
     }
 
     /**
-     * subtract two vectors
-     * 
-     * @param vector1
-     * @param vector2
-     * @return the result of the vector operation
+     * Subtracts the second vector from the first vector element-wise.
+     *
+     * @param vector1 the first vector
+     * @param vector2 the second vector
+     * @return a new vector representing the element-wise difference of the input
+     *         vectors
      */
     public static double[] subtract(double[] vector1, double[] vector2) {
         double[] result = new double[vector1.length];
@@ -39,11 +49,12 @@ public class Vector {
     }
 
     /**
-     * multiply two vectors
-     * 
-     * @param vector1
-     * @param vector2
-     * @return the result of the vector operation
+     * Multiplies two vectors element-wise.
+     *
+     * @param vector1 the first vector
+     * @param vector2 the second vector
+     * @return a new vector representing the element-wise product of the input
+     *         vectors
      */
     public static double[] multiply(double[] vector1, double[] vector2) {
         double[] result = new double[vector1.length];
@@ -55,11 +66,12 @@ public class Vector {
     }
 
     /**
-     * divide a vector by another
-     * 
-     * @param vector1
-     * @param vector2
-     * @return the result of the vector operation
+     * Divides the first vector by the second vector element-wise.
+     *
+     * @param vector1 the numerator vector
+     * @param vector2 the denominator vector
+     * @return a new vector representing the element-wise division of the input
+     *         vectors
      */
     public static double[] divide(double[] vector1, double[] vector2) {
         double[] result = new double[vector1.length];
@@ -71,10 +83,10 @@ public class Vector {
     }
 
     /**
-     * multiply a vector by itself
-     * 
-     * @param vector
-     * @return the result of the vector operation
+     * Squares each element of the input vector.
+     *
+     * @param vector the input vector
+     * @return a new vector with each element squared
      */
     public static double[] square(double[] vector) {
         double[] result = new double[vector.length];
@@ -86,10 +98,10 @@ public class Vector {
     }
 
     /**
-     * sum all the values in a vector
-     * 
-     * @param vector
-     * @return the value of the sum of the vector
+     * Computes the sum of all elements in a vector.
+     *
+     * @param vector the input vector
+     * @return the sum of all elements in the vector
      */
     public static double sum(double[] vector) {
         double vectorSum = 0.0;
@@ -100,11 +112,11 @@ public class Vector {
     }
 
     /**
-     * calculate the dot product of two vectors
-     * 
-     * @param vector1
-     * @param vector2
-     * @return the dot product of two vectors
+     * Computes the dot product of two vectors.
+     *
+     * @param vector1 the first vector
+     * @param vector2 the second vector
+     * @return the dot product of the two vectors
      */
     public static double dotProduct(double[] vector1, double[] vector2) {
         double dotProduct = 0.0;
@@ -117,12 +129,12 @@ public class Vector {
     }
 
     /**
-     * calculate the euclidean distance between two vectors, without applying the
-     * final square-root operation
-     * 
-     * @param vector1
-     * @param vector2
-     * @return the euclidean distance between two vectors (no square root)
+     * Computes the Euclidean distance squared (without the square root) between two
+     * vectors.
+     *
+     * @param vector1 the first vector
+     * @param vector2 the second vector
+     * @return the squared Euclidean distance between the two vectors
      */
     public static double euclideanDistanceNoSqrt(double[] vector1, double[] vector2) {
         double distance = 0.0;
@@ -135,11 +147,11 @@ public class Vector {
     }
 
     /**
-     * calculate the euclidean distance between two vectors
-     * 
-     * @param vector1
-     * @param vector2
-     * @return the euclidean distance between two vectors
+     * Computes the Euclidean distance between two vectors.
+     *
+     * @param vector1 the first vector
+     * @param vector2 the second vector
+     * @return the Euclidean distance between the two vectors
      */
     public static double euclideanDistance(double[] vector1, double[] vector2) {
         double distance = 0.0;
@@ -152,11 +164,11 @@ public class Vector {
     }
 
     /**
-     * calculate the cosine similarity of two vectors
-     * 
-     * @param vector1
-     * @param vector2
-     * @return the cosine similarity of two vectors
+     * Computes the cosine similarity between two vectors.
+     *
+     * @param vector1 the first vector
+     * @param vector2 the second vector
+     * @return the cosine similarity of the two vectors
      */
     public static double cosineSimilarity(double[] vector1, double[] vector2) {
         double dotProduct = 0.0;
