@@ -5,6 +5,8 @@
 The full Javadoc for this project can be accessed at 
 [https://conor-dowdall.github.io/text-simplifier/](https://conor-dowdall.github.io/text-simplifier/).
 
+Word Embedding files can be downloaded from [https://nlp.stanford.edu/projects/glove/](https://nlp.stanford.edu/projects/glove/) (GloVe: Global Vectors for Word Representation).
+
 ## Text Simplifier
 This application provides a modular and extensible platform for handling textual data
 with features like customizable menus, progress meters, and word embedding management.
