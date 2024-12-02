@@ -36,11 +36,17 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initWordReplacer() {
         getWordReplacer().setSimilarityAlgorithm(getSimilarityAlgorithmToUse());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void createMenuItems() {
         List<MenuItem> itemList = new ArrayList<MenuItem>();
@@ -55,12 +61,18 @@ public class SimilarityAlgorithmSettingsMenu extends WordReplacerSettingsMenu {
         addMenuItemList(itemList);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void printPreferences() {
         getMenuPrinter().printInfo("Similarity Algorithm: \t\t"
                 + getSimilarityAlgorithmToUse().toString());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resetPreferences() {
         getWordReplacer().setSimilarityAlgorithm(getSimilarityAlgorithmToUse());

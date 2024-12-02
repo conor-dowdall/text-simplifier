@@ -36,11 +36,17 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initWordReplacer() {
         getWordReplacer().setReplacementMethod(getReplacementMethodToUse());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void createMenuItems() {
         List<MenuItem> itemList = new ArrayList<MenuItem>();
@@ -55,12 +61,18 @@ public class ReplacementMethodSettingsMenu extends WordReplacerSettingsMenu {
         addMenuItemList(itemList);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void printPreferences() {
         getMenuPrinter().printInfo("Replacement Method: \t\t"
                 + getReplacementMethodToUse().toString());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resetPreferences() {
         getWordReplacer().setReplacementMethod(getReplacementMethodToUse());

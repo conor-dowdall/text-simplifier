@@ -51,6 +51,20 @@ public abstract class WordReplacerAbstract {
      * similarity algorithm.
      * The method calculates the similarity score between the word embedding and the
      * words in the replacement word set.
+     * <p>
+     * Total Time Complexity: O(R⋅(d+logk)+klogk)
+     * </p>
+     * <p>
+     * Explanation:
+     * 
+     * O(R⋅d): Iterating through R replacement words and calculating
+     * similarity for each embedding.
+     * O(R⋅log⁡k): Inserting into and maintaining the priority queue.
+     * O(klog⁡k): Polling the final k elements from the priority queue.
+     * 
+     * In practice, k is typically small (e.g., top 5 or 10), so the dominant term
+     * is: O(R⋅d)
+     * </p>
      * 
      * @param wordEmbedding the word embedding to find similar words for
      */
@@ -83,7 +97,9 @@ public abstract class WordReplacerAbstract {
 
     /**
      * Clears the list of similar words in all word embeddings within the word
-     * embedding map.
+     * embedding map. The method iterates over all embeddings in wordEmbeddingMap,
+     * which takes O(n). The emptySimilarWordList operation is assumed to be O(1) if
+     * it simply clears the list or resets it.
      */
     private void emptyWordEmbeddingMapSimilarWordList() {
         if (wordEmbeddingMap != null) {
@@ -97,6 +113,12 @@ public abstract class WordReplacerAbstract {
      * Replaces a word in the string if it is not present in the replacement set.
      * The replacement is based on the similarity score of the word embeddings using
      * the configured similarity algorithm and replacement method.
+     * 
+     * R: Number of replacement words in replacementWordSet.
+     * d: Dimensionality of the embeddings.
+     * k: The size limit of similar words .
+     * Worst Case: O(R⋅d+k). Thus, the overall time complexity is dominated by
+     * O(R⋅d) in the worst case.
      * 
      * @param string the word to be replaced
      * @return the replaced word, or the original word if no replacement is found
@@ -121,6 +143,36 @@ public abstract class WordReplacerAbstract {
     /**
      * Reads the input text file and writes the modified version (with word
      * replacements) to an output file.
+     * 
+     * Key Variables:
+     * 
+     * L: Number of lines in the input file.
+     * C: Average number of characters per line.
+     * n: Average number of words per line.
+     * m: Average length of a word.
+     * R: Number of replacement words in replacementWordSet.
+     * d: Dimensionality of the embeddings.
+     * k: Size limit of similar words (similarWords()).
+     * 
+     * Reading the Input File:
+     * Using BufferedReader.readLine(), the entire file is read line by line. This
+     * is O(T), where T=L⋅CT is the total number of characters in the file.
+     * 
+     * Processing Each Line with replaceString:
+     * The replaceString method operates on n words in a line with complexity
+     * O(n⋅m+R⋅d) in the worst case.
+     * Over L lines, this becomes O(L⋅n⋅(m+R⋅d)).
+     * 
+     * Writing the Output File:
+     * Writing each line with BufferedWriter.write() is proportional to the size of
+     * the replaced string, so it adds O(T).
+     * 
+     * The dominant term is the processing of each line via replaceString. Hence,
+     * the overall time complexity is: O(L⋅n⋅(m+R⋅d)).
+     * 
+     * L⋅n: Total number of words in the file.
+     * m+R⋅d: Time complexity for replacing a single word, including similarity
+     * calculations if triggered.
      * 
      * @param inputTextFileName  the input text file to read
      * @param outputTextFileName the output text file to write the replaced content

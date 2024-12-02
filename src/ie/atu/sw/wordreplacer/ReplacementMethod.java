@@ -12,6 +12,7 @@ public enum ReplacementMethod {
     /**
      * Replacement method that returns the most similar word, which is assumed
      * to be the last word in the list after the priority queue has been processed.
+     * Time Complexity: O(1) for accessing the last element of the list.
      */
     MOST_SIMILAR("Most Similar Word") {
         @Override
@@ -23,6 +24,7 @@ public enum ReplacementMethod {
     /**
      * Replacement method that returns the least similar word, which is assumed
      * to be the first word in the list after the priority queue has been processed.
+     * Accessing the first element of a list using getFirst() is O(1).
      */
     LEAST_SIMILAR("Least Similar Word") {
         @Override
@@ -32,7 +34,10 @@ public enum ReplacementMethod {
     },
 
     /**
-     * Replacement method that returns a random word from the list.
+     * Replacement method that returns a random word from the list. The method
+     * performs constant-time operations for each step. Checking if the list is null
+     * or empty, generating a random index, and accessing an element by index in a
+     * list are all O(1) operations.
      */
     RANDOM("Random Word from List") {
         @Override
@@ -48,7 +53,8 @@ public enum ReplacementMethod {
     /**
      * Replacement method that biases the selection toward the most similar word in
      * the list, which is assumed to be the last word in the list after the priority
-     * queue has been processed.
+     * queue has been processed. The two loops in this method run independently, and
+     * each has O(n) complexity. The total time complexity is O(n)+O(n)=O(n).
      */
     BIASED_MOST_SIMILAR("Biased Toward Most Similar Word from List") {
         @Override
@@ -80,6 +86,10 @@ public enum ReplacementMethod {
 
     /**
      * Replacement method that returns the entire list of words as a string.
+     * Concatenating strings in Java can be costly if done inefficiently. However,
+     * the toString method of a List internally uses a StringBuilder to efficiently
+     * handle string concatenation, so the overhead is minimized and remains
+     * O(n).
      */
     ARRAY("Array/List of Words") {
         @Override

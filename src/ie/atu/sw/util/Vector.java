@@ -112,7 +112,7 @@ public class Vector {
     }
 
     /**
-     * Computes the dot product of two vectors.
+     * Computes the dot product of two vectors. Time Complexity: O(n).
      *
      * @param vector1 the first vector
      * @param vector2 the second vector
@@ -130,7 +130,7 @@ public class Vector {
 
     /**
      * Computes the Euclidean distance squared (without the square root) between two
-     * vectors.
+     * vectors. Time Complexity: O(n).
      *
      * @param vector1 the first vector
      * @param vector2 the second vector
@@ -147,7 +147,7 @@ public class Vector {
     }
 
     /**
-     * Computes the Euclidean distance between two vectors.
+     * Computes the Euclidean distance between two vectors. Time Complexity: O(n).
      *
      * @param vector1 the first vector
      * @param vector2 the second vector
@@ -164,7 +164,7 @@ public class Vector {
     }
 
     /**
-     * Computes the cosine similarity between two vectors.
+     * Computes the cosine similarity between two vectors. Time Complexity: O(n).
      *
      * @param vector1 the first vector
      * @param vector2 the second vector

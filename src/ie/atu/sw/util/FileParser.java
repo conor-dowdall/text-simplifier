@@ -29,7 +29,10 @@ public class FileParser {
     /**
      * Parses a file into a {@link HashSet} of strings.
      * Each line in the file is split by the specified delimiter, and all resulting
-     * parts are added to the set.
+     * parts are added to the set. The time complexity of the parseSetFile method
+     * is O(T) where T is the total number of characters in the file. This accounts
+     * for reading the file, splitting lines, and inserting elements into the
+     * HashSet.
      *
      * @param fileName  the name of the file to parse
      * @param delimiter the delimiter used to split each line
@@ -61,6 +64,14 @@ public class FileParser {
      * objects.
      * The first part of each line is treated as the key (a word), and the remaining
      * parts are parsed as numerical values to create a {@link WordEmbedding}.
+     * 
+     * The time complexity of the parseMapFile method is O(T) where T is the total
+     * number of characters in the file. This accounts for:
+     * Reading the file line by line;
+     * Splitting each line using the delimiter;
+     * Parsing the numeric embeddings (proportional to the number of elements in
+     * each line);
+     * Inserting entries into the HashMap (average-case O(1) per insertion).
      *
      * @param fileName  the name of the file to parse
      * @param delimiter the delimiter used to split each line

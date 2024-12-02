@@ -49,7 +49,8 @@ public class WordReplacer extends WordReplacerAbstract {
 
     /**
      * Replaces words in a given string with their corresponding replacements,
-     * while preserving capitalization and punctuation.
+     * while preserving capitalization and punctuation. For n words, each with
+     * O(m) operations, the total complexity is O(n⋅m).
      * 
      * @param string the input string to be processed
      * @return the string with words replaced, maintaining capitalization and
