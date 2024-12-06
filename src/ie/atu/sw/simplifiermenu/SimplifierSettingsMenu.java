@@ -343,8 +343,8 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
      * Handles loading of the word embeddings file, updating preferences, and
      * setting the word replacer's map.
      * <p>
-     * Loading word embeddings from file: O(n⋅m), where n is the number of
-     * lines in the file, and mm is the complexity of parsing each line
+     * Loading word embeddings from file: O(n), where n is the number of
+     * lines in the file.
      * </p>
      *
      * @throws IOException           if an I/O error occurs while reading the file.
@@ -390,8 +390,8 @@ public class SimplifierSettingsMenu extends WordReplacerSettingsMenu {
      * Handles loading of the replacement words file, updating preferences, and
      * setting the word replacer's set.
      * <p>
-     * Loading replacement words from file: O(n⋅m), where n is the number of
-     * lines in the file, and mm is the complexity of parsing each line
+     * Loading replacement words from file: O(n), where n is the number of
+     * lines in the file.
      * </p>
      *
      * @throws IOException if an I/O error occurs while reading the file.

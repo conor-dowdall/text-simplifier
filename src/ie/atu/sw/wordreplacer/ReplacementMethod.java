@@ -86,8 +86,7 @@ public enum ReplacementMethod {
 
     /**
      * Replacement method that returns the entire list of words as a string.
-     * Concatenating strings in Java can be costly if done inefficiently. However,
-     * the toString method of a List internally uses a StringBuilder to efficiently
+     * The toString method of a List internally uses a StringBuilder to efficiently
      * handle string concatenation, so the overhead is minimized and remains
      * O(n).
      */

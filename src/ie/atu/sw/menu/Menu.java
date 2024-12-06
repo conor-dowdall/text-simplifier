@@ -14,9 +14,7 @@ import ie.atu.sw.util.MenuPrinterInterface;
  * <p>
  * A {@link LinkedHashMap} stores the shortcuts, which is similar to HashMap but
  * also maintains the order of insertion. The put() operation generally runs in
- * O(1) time on average, similar to HashMap, because it uses a hash table
- * with linked list or tree structures for buckets. In the worst case, when many
- * elements hash to the same bucket, it can take O(n) time.
+ * O(1) time on average. In the worst case it can take O(n) time.
  * </p>
  */
 public abstract class Menu {
